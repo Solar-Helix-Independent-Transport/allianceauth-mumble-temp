@@ -1,0 +1,16 @@
+{% extends 'allianceauth/base.html' %}
+{% load i18n %}
+
+{% block page_title %}{% trans "Mumble Temp Links" %}{% endblock %}
+
+{% block content %}
+    <div class="col-lg-12">
+        <h1 class="page-header text-center">{% trans "Mumble Temporary Links" %}</h1>
+        <div class="col-lg-12 container">           
+            {% block create %}{% endblock %}
+        </div>
+        <div class="col-lg-12 container">           
+            {% block admin %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

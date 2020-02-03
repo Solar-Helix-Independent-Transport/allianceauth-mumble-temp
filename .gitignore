@@ -1,0 +1,9 @@
+*.log
+*.tmp
+*.bak
+*.old
+__pycache__
+.vscode/
+dist/
+build/
+*.egg-info/

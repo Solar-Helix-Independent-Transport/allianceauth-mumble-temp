@@ -1,0 +1,6 @@
+include LICENSE
+include README.md
+recursive-include mumbletemps *.py
+recursive-include mumbletemps/static *
+recursive-include mumbletemps/templates *
+

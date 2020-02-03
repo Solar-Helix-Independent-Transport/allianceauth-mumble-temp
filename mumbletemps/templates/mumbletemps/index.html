@@ -1,0 +1,98 @@
+{% extends 'mumbletemps/base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load timetags %}
+
+{% block create %}
+    <div class="col-md-6">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">Mumble Links</h3>            
+            </div>
+            <div class="panel-body text-center">  
+                Temp Links Give Access to mumble with the <b class="text-success">Guest</b> Group for the preset time<br><br>Connected users <b class="text-warning">will not</b> be kicked at the end of this time period<br><br>Templink users can be kicked in mumble buy typing <span class="badge badge-danger text-warning">!kicktemps</span> in mumble chat<br><br>There are <b class="text-warning">no restrictions</b> on who or how many can use a templink, share wisely.</div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Create New Link</h3>            
+            </div>
+            <div class="panel-body text-center">  
+                <p>Your link will be displayed on the next page for easy copy and paste</p>
+                <form action="/mumbletemps/" method="post">
+                    {% csrf_token %}
+                    <label for="time">Duration (hours)</label>
+                    <select class="form-control" name="time">
+                        <option value="3">3</option>
+                        <option value="6">6</option>
+                        <option value="12">12</option>
+                        <option value="24">24</option>
+                      </select>           
+                    <br>         
+                    <input class="btn btn-primary col-md-12" type="submit" value="OK">
+                </form>
+            </div>
+        </div>
+    </div>
+    {% if tl %}
+    <div class="col-md-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">New Link</h3>            
+            </div>
+            <div class="panel-body text-center" style="min-height: 100px;">  
+                <p>Expires in: {{tl.expires|print_timestamp|timeuntil }} </p>
+                <pre>{{ request.scheme }}://{{request.get_host}}{% url 'mumbletemps:join' tl.link_ref %}</pre>
+                <button class="btn btn-info col-md-12" id="clipboard-new" data-clipboard-text="{{ request.scheme }}://{{request.get_host}}{% url 'mumbletemps:join' tl.link_ref %}">Copy to Clipboard!</button>
+            </div>
+        </div>
+    </div>{% endif %}
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Current Links</h3>            
+            </div>
+            <div class="panel-body" style="min-height: 100px;">  
+                <table class="table table-striped">
+                    <thead>
+                        <th></th>
+                        <th class="text-center">Creator</th>
+                        <th class="text-center">Key</th>
+                        <th class="text-center">Time Left</th>
+                        <th class="text-center">Copy</th>
+                        <th class="text-center">Nuke</th>
+                    </thead>
+                    <tbody>
+                        {% for lnk in tl_list %}
+                        <tr>
+                            <td class="text-center"><img class="ra-avatar img-circle" src="{{lnk.creator.portrait_url_32}}"></td>
+                            <td class="text-center">{{lnk.creator.character_name}}</td>
+                            <td class="text-center">{{lnk.link_ref}}</td>
+                            <td class="text-center">{{lnk.expires|print_timestamp|timeuntil }}</td>
+                            <td class="text-center"><button class="btn btn-info" id="clipboard-{{lnk.link_ref}}" data-clipboard-text="{{ request.scheme }}://{{request.get_host}}{% url 'mumbletemps:join' lnk.link_ref %}">Copy to Clipboard!</button></td>
+                            <td class="text-center"><a class="btn btn-danger" href="{% url 'mumbletemps:nuke' lnk.link_ref %}">Nuke Link!</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_javascript %}    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+<script>
+    var clipboard = new ClipboardJS('#clipboard-new');
+    {% for lnk in tl_list %}
+    var lnk{{lnk.link_ref}} = new ClipboardJS('#clipboard-{{lnk.link_ref}}');
+    {% endfor %}
+</script>
+{% endblock %}
+
+{% block extra_css %}    
+{% endblock %}
+
+{% block extra_script %}    
+{% endblock %}
