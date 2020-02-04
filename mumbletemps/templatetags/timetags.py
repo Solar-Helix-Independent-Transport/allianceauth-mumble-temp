@@ -1,5 +1,7 @@
 from django import template
 import datetime
+from django.utils import timezone
+
 register = template.Library()
 
 def print_timestamp(timestamp):
@@ -8,6 +10,6 @@ def print_timestamp(timestamp):
         ts = float(timestamp)
     except ValueError:
         return None
-    return datetime.datetime.fromtimestamp(ts)
+    return datetime.datetime.fromtimestamp(ts).replace(tzinfo=timezone.utc)
 
 register.filter(print_timestamp)
