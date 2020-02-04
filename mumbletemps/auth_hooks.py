@@ -18,7 +18,9 @@ class ExampleMenuItem(MenuItemHook):
         )
 
     def render(self, request):
-        return MenuItemHook.render(self, request)
+        if request.user.has_perm('mumbletemps.create_new_links'):
+            return MenuItemHook.render(self, request)
+        return ''
 
 
 @hooks.register('menu_item_hook')
