@@ -19,18 +19,23 @@ The mumble chat command `!kicktemps` will purge the mumble server of all temp us
 
 ## Mumble Authenticator
 to update your mumble authenticator if you git cloned the original repo we will add my branch as a remote and checkout the updated code.
-> It is a good idea to backup your `authenticator.ini` file before starting
-1. `cd` into the folder you have the authenticator code.
-2. `git status` to confirm it is a git repo and the corewct place
+> ⚠️It is a good idea to backup your `authenticator.ini` file before starting
+1. `cd` into the folder you have the authenticator code in.
+2. `git status` to confirm it is a git repo and the correct place
 3. `git remote add upstream git@gitlab.com:aaronkable/mumble-authenticator.git` to add the remote
 4. `git fetch upstream` to grab the updates
 5. `git checkout upstream/master` to roll over to my code
 6. restart your authenticator with supervisor
+> ℹ️ The authenticator.log should show something like `Starting AllianceAuth mumble authenticator V:1.0.0 - TempLinks` if you are on the correct branch and version
 
 # Permissions
 Perm | Admin Site	 | Auth Site 
  --- | --- | --- 
 mumbletemps.create_new_links | None | Can create and delete Temp Links.
+
+# todo
+* format name with service name config
+* optional prefix
 
 # Preview
 ## Managemrnt and Creatiom
