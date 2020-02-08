@@ -30,6 +30,8 @@ to update your mumble authenticator if you git cloned the original repo we will 
 > `Starting AllianceAuth mumble authenticator V:1.0.0 - TempLinks` 
 > if you are on the correct branch and version, if not you may still be running the default auth verssion and will need to investigate why. Users will get propted for passwords when they try to connect with a temp link and you are not running this version.
 
+If you did not use the git clone method of installing the authenticator, simply copy the contents of this repo over the top of your current install, **BE SURE TO BACKUP YOUR `authenticator.ini` BEFORE YOU START!**
+
 # Permissions
 Perm | Admin Site	 | Auth Site 
  --- | --- | --- 
