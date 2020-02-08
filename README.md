@@ -26,7 +26,9 @@ to update your mumble authenticator if you git cloned the original repo we will 
 4. `git fetch upstream` to grab the updates
 5. `git checkout upstream/master` to roll over to my code
 6. restart your authenticator with supervisor
-> ℹ️ The authenticator.log should show something like `Starting AllianceAuth mumble authenticator V:1.0.0 - TempLinks` if you are on the correct branch and version, if not you may still be running the default auth verssion and will need to investigate why. Users will get propted for passwords when they try to connect with a temp link and you are not running this version.
+> ℹ️ The authenticator.log should show something like 
+> `Starting AllianceAuth mumble authenticator V:1.0.0 - TempLinks` 
+> if you are on the correct branch and version, if not you may still be running the default auth verssion and will need to investigate why. Users will get propted for passwords when they try to connect with a temp link and you are not running this version.
 
 # Permissions
 Perm | Admin Site	 | Auth Site 
