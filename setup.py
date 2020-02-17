@@ -35,5 +35,5 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     ulr="https://github.com/pvyParts/allianceauth-mumble-temp/",
-    download_url="https://github.com/pvyParts/allianceauth-mumble-temp/archive/v0.0.3.tar.gz"
+    download_url="https://github.com/pvyParts/allianceauth-mumble-temp/archive/v1.1.0.tar.gz"
 )
