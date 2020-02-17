@@ -33,5 +33,7 @@ setup(
         'Programming Language :: Python :: 3.6',        
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
-    ]
+    ],
+    ulr="https://github.com/pvyParts/allianceauth-mumble-temp/",
+    download_url="https://github.com/pvyParts/allianceauth-mumble-temp/archive/v0.0.3.tar.gz"
 )

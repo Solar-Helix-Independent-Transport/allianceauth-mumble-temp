@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
 from django.utils import timezone
 from django.contrib import messages
+from esi.decorators import single_use_token
+from allianceauth.eveonline.models import EveCharacter
+
 
 from .models import TempLink
 import datetime
@@ -35,8 +38,8 @@ def index(request):
     }    
     return render(request, 'mumbletemps/index.html', context)
 
-@login_required
-def link(request, link_ref):
+@single_use_token(scopes=['publicData'])
+def link(request, token, link_ref):
     link = None
     connect_url = None
     try:
@@ -44,7 +47,12 @@ def link(request, link_ref):
     except:
         pass # crappy link
     
-    connect_url = "{}:{}@{}".format(urllib.parse.quote(request.user.username, safe=""), link_ref, settings.MUMBLE_URL)
+    try:
+        EveCharacter.objects.update_character(token.character_id)
+    except:
+        pass
+
+    connect_url = "{}:{}@{}".format(urllib.parse.quote(str(token.character_id), safe=""), link_ref, settings.MUMBLE_URL)
     context = {
         'link': link,
         'connect_url': connect_url,

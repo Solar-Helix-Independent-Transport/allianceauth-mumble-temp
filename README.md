@@ -12,7 +12,7 @@ The mumble chat command `!kicktemps` will purge the mumble server of all temp us
 # Setup
 > ⚠️This is assuming you already have configured a fully functioning mumbke service.
 ## Auth Plugin
-1. `pip install allianceauth-mumble-temps`
+1. `pip install allianceauth-mumbletemps`
 2. add `'mumbletemps',` to your `INSTALLED_APPS` in the local.py, i recomend it is at the top for menu ordering.
 3. run migrations
 4. restart auth

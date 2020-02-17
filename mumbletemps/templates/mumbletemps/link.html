@@ -1,24 +1,45 @@
-{% extends 'mumbletemps/base.html' %}
-{% load i18n %}
 {% load humanize %}
 {% load timetags %}
 {% load static %}
+{% load i18n %}
+{% load navactive %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% include 'allianceauth/icons.html' %}
 
-{% block create %}
-<div style="margin-top:25px">
-    <div class="col-md-12 text-center">
-        <img class="ra-avatar img-circle" src="{{link.creator.portrait_url_128}}"><br><br>
-        <h4>{{link.creator.character_name}} has invited you to join Mumble!</h4>
-        <p>Time Remaining: <span id="countdown{{link.link_ref}}"></span></p>
-        <p><span class="label label-info">Link Ref: {{link.link_ref}}</span></p>
-            <br>
-        <a class="btn btn-primary" href="mumble://{{ connect_url }}"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Icons_mumble.svg/400px-Icons_mumble.svg.png" alt="Mumble" height="64" width="64" style="margin: 15px;"><span style="margin: 15px;">Launch Mumble!</span></div></a>
+    <title>{% block title %}{% block page_title %}{% endblock page_title %} - Alliance Auth{% endblock title %}</title>
 
+    {% include 'bundles/bootstrap-css.html' %}
+    {% include 'bundles/fontawesome.html' %}
+
+    <link href="{% static 'css/auth-base.css' %}" type="text/css" rel="stylesheet">
+</head>
+<body>
+
+<div id="wrapper" class="container">
+    <!-- Navigation -->
+    {% include 'allianceauth/top-menu.html' %}
+    <div class="row" id="site-body-wrapper">
+        <div class="col-sm-12">
+            <div style="margin-top:25px">
+                <div class="col-md-12 text-center">
+                    <img class="ra-avatar img-circle" src="{{link.creator.portrait_url_128}}"><br><br>
+                    <h4>{{link.creator.character_name}} has invited you to join Mumble!</h4>
+                    <p>Time Remaining: <span id="countdown{{link.link_ref}}"></span></p>
+                    <p><span class="label label-info">Link Ref: {{link.link_ref}}</span></p>
+                        <br>
+                    <a class="btn btn-primary" href="mumble://{{ connect_url }}"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Icons_mumble.svg/400px-Icons_mumble.svg.png" alt="Mumble" height="64" width="64" style="margin: 15px;"><span style="margin: 15px;">Launch Mumble!</span></div></a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-{% endblock %}
-
-{% block extra_javascript %}   
+</body>
 {% include 'bundles/moment-js.html' with locale=True %}
 <script src="{% static 'js/timers.js' %}"></script>
 <script type="text/javascript">
@@ -70,13 +91,3 @@
     }
 
 </script>
-
-{% endblock %}
-
-{% block extra_css %}    
-{% endblock %}
-
-{% block extra_script %}    
-
-{% endblock %}
-
