@@ -34,7 +34,11 @@
                     <p>Time Remaining: <span id="countdown{{link.link_ref}}"></span></p>
                     <p><span class="label label-info">Link Ref: {{link.link_ref}}</span></p>
                         <br>
-                    <a class="btn btn-primary" href="mumble://{{ connect_url }}"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Icons_mumble.svg/400px-Icons_mumble.svg.png" alt="Mumble" height="64" width="64" style="margin: 15px;"><span style="margin: 15px;">Launch Mumble!</span></div></a>
+                    <a class="btn btn-primary" href="mumble://{{ connect_url }}">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Icons_mumble.svg/400px-Icons_mumble.svg.png" alt="Mumble" height="64" width="64" style="margin: 15px;">
+                        
+                        <span style="margin: 15px;">Join Mumble as: <!--<img class="ra-avatar img-circle" src="{{char.portrait_url_32}}" height="32" width="32" style="margin: 15px;">-->[{{char.corporation_ticker}}] {{char.character_name}}</span><br>
+                    </a>
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ import urllib
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.crypto import get_random_string
 from django.utils import timezone
 from django.contrib import messages
@@ -48,12 +49,19 @@ def link(request, token, link_ref):
         pass # crappy link
     
     try:
-        EveCharacter.objects.update_character(token.character_id)
-    except:
-        pass
+        char = EveCharacter.objects.get(character_id=token.character_id)
+    except ObjectDoesNotExist: 
+        try: #create a new character, we should not get here.
+            char = EveCharacter.objects.update_character(token.character_id)
+        except:
+            pass ## yeah... aint gonna happen
+    except MultipleObjectsReturned:
+        pass # authenticator woont care... but the DB will be unhappy.
 
     connect_url = "{}:{}@{}".format(urllib.parse.quote(str(token.character_id), safe=""), link_ref, settings.MUMBLE_URL)
+
     context = {
+        'char': char,
         'link': link,
         'connect_url': connect_url,
     }    

@@ -11,6 +11,11 @@ with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
+install_requires = [
+    'allianceauth>=2.5.0',
+    'django-esi>=1.6.0,<2.0'
+]
+
 setup(
     name='allianceauth-mumbletemps',
     version=__version__,
@@ -20,6 +25,7 @@ setup(
     description='Mumble Temp Links plugin for Alliance Auth',
     long_description=long_description,
     long_description_content_type='text/markdown',    
+    install_requires=install_requires,
     author='AaronKable',
     author_email='aaronkable@gmail.com',
     classifiers=[
@@ -34,6 +40,5 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
-    ulr="https://github.com/pvyParts/allianceauth-mumble-temp/",
-    download_url="https://github.com/pvyParts/allianceauth-mumble-temp/archive/v1.1.0.tar.gz"
+    ulr="https://github.com/pvyParts/allianceauth-mumble-temp/"
 )
