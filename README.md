@@ -32,6 +32,42 @@ to update your mumble authenticator if you git cloned the original repo we will 
 
 If you did not use the git clone method of installing the authenticator, simply copy the contents of this repo over the top of your current install, **BE SURE TO BACKUP YOUR `authenticator.ini` BEFORE YOU START!**
 
+## Auth Login Bypass
+To enable people to not have to register on auth, ensure you have fully updated `django-esi`
+1. edit your projects `urls.py` file:
+
+> if should look somehting like this, if yours is different only add the parts outlined below:
+
+    from django.conf.urls import include, url
+    from allianceauth import urls
+
+    urlpatterns = [
+        url(r'', include(urls)),
+    ]
+
+    handler500 = 'allianceauth.views.Generic500Redirect'
+    handler404 = 'allianceauth.views.Generic404Redirect'
+    handler403 = 'allianceauth.views.Generic403Redirect'
+    handler400 = 'allianceauth.views.Generic400Redirect' 
+
+> edit it to add a new import and a new url
+
+    from django.conf.urls import include, url
+    from allianceauth import urls
+    from mumbletemps.views import link  # New Import 
+
+    urlpatterns = [
+        url(r'^mumbletemps/join/(?P<link_ref>[\w\-]+)/$', link, name='join'),  # New URL override BEFORE THE MAIN IMPORT
+        url(r'', include(urls)),
+    ]
+
+    handler500 = 'allianceauth.views.Generic500Redirect'
+    handler404 = 'allianceauth.views.Generic404Redirect'
+    handler403 = 'allianceauth.views.Generic403Redirect'
+    handler400 = 'allianceauth.views.Generic400Redirect' 
+
+2. restart services and you're done.
+
 # Permissions
 Perm | Admin Site	 | Auth Site 
  --- | --- | --- 
