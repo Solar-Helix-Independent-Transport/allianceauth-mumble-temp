@@ -96,7 +96,7 @@ def link_username(request, name, association, link):
 
     password = get_random_string(15)
 
-    display_name = "[TEMP*][{}] {}".format(association, name)
+    display_name = "{}[{}] {}".format(app_settings.MUMBLE_TEMPS_LOGIN_PREFIX, association, name)
 
     temp_user = TempUser.objects.create(username=username, password=password, name=display_name, expires=link.expires)
 
@@ -130,7 +130,7 @@ def link_sso(request, token, link):
 
     password = get_random_string(15)
 
-    display_name = "[TEMP]{}".format(NameFormatter(MumbleService(), psudo_user(char, username)).format_name())
+    display_name = "{}}{}".format(app_settings.MUMBLE_TEMPS_SSO_PREFIX, NameFormatter(MumbleService(), psudo_user(char, username)).format_name())
 
     temp_user = TempUser.objects.create(username=username, password=password, name=display_name, expires=link.expires)
 

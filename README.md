@@ -17,6 +17,14 @@ The mumble chat command `!kicktemps` will purge the mumble server of all temp us
 3. run migrations
 4. restart auth
 
+## Settings
+Setting | Default	 | Description 
+ --- | --- | --- 
+MUMBLE_TEMPS_FORCE_SSO | True | Setting this to `False` will allow users to auth with the non-sso method
+MUMBLE_TEMPS_SSO_PREFIX | "[TEMP]" | Display Name Prefix for an SSO'd temp user in mumble
+MUMBLE_TEMPS_LOGIN_PREFIX | "[*TEMP]" | Display Name Prefix for a non-SSO'd temp user in mumble
+
+
 ## Mumble Authenticator
 to update your mumble authenticator if you git cloned the original repo we will add my branch as a remote and checkout the updated code.
 > ⚠️It is a good idea to backup your `authenticator.ini` file before starting
@@ -36,7 +44,7 @@ If you did not use the git clone method of installing the authenticator, simply 
 To enable people to not have to register on auth, ensure you have fully updated `django-esi`
 1. edit your projects `urls.py` file:
 
-> if should look somehting like this, if yours is different only add the parts outlined below:
+> if should look something like this, if yours is different only add the parts outlined below:
 ```python
 from django.conf.urls import include, url
 from allianceauth import urls
@@ -73,13 +81,11 @@ Perm | Admin Site	 | Auth Site
  --- | --- | --- 
 mumbletemps.create_new_links | None | Can create and delete Temp Links.
 
-# todo
-* format name with service name config
-* optional prefix
-
 # Preview
 ## Managemrnt and Creatiom
 ![image](https://i.imgur.com/Jl2ihH2.png)
+## OPTIONAL Login Screen ( Non SSO mode )
+![Login](https://i.imgur.com/BIRLFmq.png)
 ## Templink User View
-![Demo](https://i.imgur.com/zLC9ZPu.png)
+![Demo](https://i.imgur.com/G86qAb8.png)
 
