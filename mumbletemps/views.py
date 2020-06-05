@@ -11,9 +11,27 @@ from django.contrib import messages
 from esi.decorators import single_use_token
 from allianceauth.eveonline.models import EveCharacter
 
+from allianceauth.services.modules.mumble.auth_hooks import MumbleService
+from allianceauth.services.hooks import NameFormatter
+from allianceauth.authentication.models import get_guest_state
 
-from .models import TempLink
+from django.http import Http404
+
+from . import app_settings
+from .models import TempLink, TempUser
+from esi.views import sso_redirect
+from esi.decorators import _check_callback
 import datetime
+
+class psudo_profile:
+    def __init__(self, main):
+        self.main_character = main
+        self.state = get_guest_state()
+
+class psudo_user:
+    def __init__(self, main, username):
+        self.username = username
+        self.profile = psudo_profile(main)
 
 @login_required
 @permission_required('mumbletemps.create_new_links')
@@ -39,15 +57,63 @@ def index(request):
     }    
     return render(request, 'mumbletemps/index.html', context)
 
-@single_use_token(scopes=['publicData'])
-def link(request, token, link_ref):
+def link(request, link_ref):
     link = None
-    connect_url = None
     try:
         link = TempLink.objects.get(link_ref=link_ref)
     except:
-        pass # crappy link
+        raise Http404("Temp Link Does not Exist") 
     
+    token = _check_callback(request)
+    if token:
+        return link_sso(request, token, link)
+
+
+    if app_settings.MUMBLE_TEMPS_FORCE_SSO:  #default always SSO
+        # prompt the user to login for a new token
+        return sso_redirect(request, scopes=['publicData'])
+
+    if request.method == 'POST':  # ok so maybe we want to let some other people in too.
+        if request.POST.get('sso', False) == "False": # they picked user
+            name = request.POST.get('name', False)
+            association = request.POST.get('association', False)
+            return link_username(request, name, association, link)
+        elif request.POST.get('sso', False) == "True": # they picked SSO
+            # prompt the user to login for a new token
+            return sso_redirect(request, scopes=['publicData'])
+
+    context = {
+        'link': link,
+    }    
+    return render(request, 'mumbletemps/login.html', context)
+
+def link_username(request, name, association, link):
+    connect_url = None
+    
+    username = get_random_string(10)
+    while TempUser.objects.filter(username=username).exists():  # force unique
+        username = get_random_string(10)
+
+    password = get_random_string(15)
+
+    display_name = "[TEMP*][{}] {}".format(association, name)
+
+    temp_user = TempUser.objects.create(username=username, password=password, name=display_name, expires=link.expires)
+
+    connect_url = "{}:{}@{}".format(username, password, settings.MUMBLE_URL)
+
+    context = {
+        'temp_user': temp_user,
+        'link': link,
+        'connect_url': connect_url,
+        'mumble': settings.MUMBLE_URL,
+    }    
+
+    return render(request, 'mumbletemps/link.html', context)
+
+def link_sso(request, token, link):
+    connect_url = None
+
     try:
         char = EveCharacter.objects.get(character_id=token.character_id)
     except ObjectDoesNotExist: 
@@ -57,13 +123,24 @@ def link(request, token, link_ref):
             pass ## yeah... aint gonna happen
     except MultipleObjectsReturned:
         pass # authenticator woont care... but the DB will be unhappy.
+    
+    username = get_random_string(10)
+    while TempUser.objects.filter(username=username).exists():  # force unique
+        username = get_random_string(10)
 
-    connect_url = "{}:{}@{}".format(urllib.parse.quote(str(token.character_id), safe=""), link_ref, settings.MUMBLE_URL)
+    password = get_random_string(15)
+
+    display_name = "[TEMP]{}".format(NameFormatter(MumbleService(), psudo_user(char, username)).format_name())
+
+    temp_user = TempUser.objects.create(username=username, password=password, name=display_name, expires=link.expires)
+
+    connect_url = "{}:{}@{}".format(username, password, settings.MUMBLE_URL)
 
     context = {
-        'char': char,
+        'temp_user': temp_user,
         'link': link,
         'connect_url': connect_url,
+        'mumble': settings.MUMBLE_URL,
     }    
 
     return render(request, 'mumbletemps/link.html', context)

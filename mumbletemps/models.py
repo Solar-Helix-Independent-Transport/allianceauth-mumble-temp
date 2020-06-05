@@ -17,3 +17,13 @@ class TempLink(models.Model):
     
     def __str__(self):
         return "Link {} - {}".format(self.link_ref, self.expires)
+
+
+class TempUser(models.Model):
+    name = models.CharField(max_length=200) # Display name to show
+    username = models.CharField(max_length=20, unique=True) # Username used to login to mumble
+    password = models.CharField(max_length=20) # Password used to login to mumble
+    expires = models.IntegerField() # timestamp of expiry
+
+    def __str__(self):
+        return "Temp User: {} - {}".format(self.username, self.name)

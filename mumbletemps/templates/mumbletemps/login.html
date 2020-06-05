@@ -34,22 +34,36 @@
                     <p>Time Remaining: <span id="countdown{{link.link_ref}}"></span></p>
                     <p><span class="label label-info">Link Ref: {{link.link_ref}}</span></p>
                         <br>
-                    <a class="btn btn-primary" href="mumble://{{ connect_url }}">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Icons_mumble.svg/400px-Icons_mumble.svg.png" alt="Mumble" height="64" width="64" style="margin: 15px;">
-                        
-                        <span style="margin: 15px;">Click to Join Mumble as: <b>{{temp_user.name}}</b></span><br>
-                    </a>
+                    <form action="{% url 'mumbletemps:join' link.link_ref %}" method="post">
+                        {% csrf_token %}
+
+                        <input type="hidden" name="sso" value="True" />
+                        <input type="image" class="img-responsive center-block" src="{% static 'img/sso/EVE_SSO_Login_Buttons_Large_Black.png' %}" border=0 alt="Login with SSO" />
+
+                    </form>
                     <div class="clearfix"></div><br>
                     <div class="col-md-4 col-md-offset-4 col-sm-12">
                         <div class="panel panel-default">
                             <div class="panel-heading text-center">
-                                <h4>Manual Connect</h4>
+                                <h4>No SSO</h4>
                             </div>
-                            <div class="panel-body">
-                                <p>If you have problems with the application link above. <br>Please use the following in Mumble's connection dialog</p>
-                                <p>Mumble Url: <span class="badge">{{mumble}}</span></p>
-                                <p>Username: <span class="badge">{{temp_user.username}}</span></p>
-                                <p>Password: <span class="badge">{{temp_user.password}}</span></p>
+                            <div class="panel-body text-left">
+                                <div class="form-group">
+                                    <form action="{% url 'mumbletemps:join' link.link_ref %}" method="post">
+                                        {% csrf_token %}
+
+                                        <input type="hidden" name="sso" value="False" />
+
+                                        <p class="text-center">If you cannot SSO with your EVE character, You can enter your own details below.</p>
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" name="name" placeholder="Who are you?">
+                                        <br>
+                                        <label for="association">Association</label>
+                                        <input type="text" class="form-control" name="association" placeholder="Who are you with?">
+                                        <br>
+                                        <button type="submit" value="Submit" class="btn col-md-12 btn-primary">Login Without SSO</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
