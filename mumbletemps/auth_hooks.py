@@ -12,7 +12,7 @@ class ExampleMenuItem(MenuItemHook):
         MenuItemHook.__init__(
             self,
             _('Mumble Temp Links'),
-            'fa fa-microphone fa-fw',
+            'fas fa-microphone fa-fw',
             'mumbletemps:index',
             navactive=['mumbletemps:index']
         )
