@@ -13,7 +13,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 install_requires = [
     'allianceauth>=2.5.0',
-    'django-esi>=1.6.0,<2.0'
+    'django-esi>=1.6.0'
 ]
 
 setup(

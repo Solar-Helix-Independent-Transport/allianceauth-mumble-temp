@@ -20,9 +20,9 @@ The mumble chat command `!kicktemps` will purge the mumble server of all temp us
 ## Settings
 Setting | Default	 | Description 
  --- | --- | --- 
-MUMBLE_TEMPS_FORCE_SSO | True | Setting this to `False` will allow users to auth with the non-sso method
-MUMBLE_TEMPS_SSO_PREFIX | "[TEMP]" | Display Name Prefix for an SSO'd temp user in mumble
-MUMBLE_TEMPS_LOGIN_PREFIX | "[*TEMP]" | Display Name Prefix for a non-SSO'd temp user in mumble
+MUMBLE_TEMPS_FORCE_SSO | `True` | Setting this to `False` will allow users to auth with the non-sso method
+MUMBLE_TEMPS_SSO_PREFIX | `[TEMP]` | Display Name Prefix for an SSO'd temp user in mumble
+MUMBLE_TEMPS_LOGIN_PREFIX | `[*TEMP]` | Display Name Prefix for a non-SSO'd temp user in mumble
 
 
 ## Mumble Authenticator
