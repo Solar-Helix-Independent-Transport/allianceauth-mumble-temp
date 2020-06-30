@@ -24,6 +24,7 @@ class TempUser(models.Model):
     username = models.CharField(max_length=20, unique=True) # Username used to login to mumble
     password = models.CharField(max_length=20) # Password used to login to mumble
     expires = models.IntegerField() # timestamp of expiry
+    templink = models.ForeignKey(TempLink, on_delete=models.CASCADE, null=True, default=None)
 
     def __str__(self):
         return "Temp User: {} - {}".format(self.username, self.name)

@@ -98,7 +98,7 @@ def link_username(request, name, association, link):
 
     display_name = "{}[{}] {}".format(app_settings.MUMBLE_TEMPS_LOGIN_PREFIX, association, name)
 
-    temp_user = TempUser.objects.create(username=username, password=password, name=display_name, expires=link.expires)
+    temp_user = TempUser.objects.create(username=username, password=password, name=display_name, expires=link.expires, templink=link)
 
     connect_url = "{}:{}@{}".format(username, password, settings.MUMBLE_URL)
 
@@ -132,7 +132,7 @@ def link_sso(request, token, link):
 
     display_name = "{}{}".format(app_settings.MUMBLE_TEMPS_SSO_PREFIX, NameFormatter(MumbleService(), psudo_user(char, username)).format_name())
 
-    temp_user = TempUser.objects.create(username=username, password=password, name=display_name, expires=link.expires)
+    temp_user = TempUser.objects.create(username=username, password=password, name=display_name, expires=link.expires, templink=link)
 
     connect_url = "{}:{}@{}".format(username, password, settings.MUMBLE_URL)
 
@@ -150,6 +150,7 @@ def link_sso(request, token, link):
 def nuke(request, link_ref):
     try:
         link = TempLink.objects.get(link_ref=link_ref).delete()
+        users = TempUser.objects.filter(templink__isnull=True).delete()
         messages.success(request, "Deleted Token {}".format(link_ref))
 
     except:
