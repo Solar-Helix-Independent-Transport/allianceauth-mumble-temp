@@ -134,7 +134,7 @@ def link_sso(request, token, link):
 
     display_name = "{}{}".format(app_settings.MUMBLE_TEMPS_SSO_PREFIX, NameFormatter(MumbleService(), psudo_user(char, username)).format_name())
 
-    temp_user = TempUser.objects.create(username=username, password=password, name=display_name, expires=link.expires, templink=link)
+    temp_user = TempUser.objects.create(username=username, password=password, name=display_name, expires=link.expires, templink=link, character_id=char.character_id)
 
     connect_url = "{}:{}@{}".format(username, password, settings.MUMBLE_URL)
 
@@ -143,7 +143,7 @@ def link_sso(request, token, link):
         'link': link,
         'connect_url': connect_url,
         'mumble': settings.MUMBLE_URL,
-    }    
+    }
 
     return render(request, 'mumbletemps/link.html', context)
 
@@ -160,6 +160,4 @@ def nuke(request, link_ref):
         pass # crappy link
     
     return redirect('mumbletemps:index')
-
-
 
