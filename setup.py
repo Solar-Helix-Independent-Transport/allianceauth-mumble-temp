@@ -40,5 +40,5 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
-    ulr="https://github.com/pvyParts/allianceauth-mumble-temp/"
+    url="https://github.com/pvyParts/allianceauth-mumble-temp/"
 )
