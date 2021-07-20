@@ -48,8 +48,12 @@ def index(request):
                                         )
             tl.save()
 
-    tl_list = TempLink.objects.filter(expires__gte=datetime.datetime.utcnow().replace(tzinfo=timezone.utc).timestamp())
-    ex_tl_list = TempLink.objects.filter(expires__lt=datetime.datetime.utcnow().replace(tzinfo=timezone.utc).timestamp())
+    tl_list = TempLink.objects.prefetch_related("creator").filter(
+        expires__gte=datetime.datetime.utcnow().replace(tzinfo=timezone.utc).timestamp()
+    )
+    ex_tl_list = TempLink.objects.prefetch_related("creator").filter(
+        expires__lt=datetime.datetime.utcnow().replace(tzinfo=timezone.utc).timestamp()
+    )
 
     context = {
         'tl': tl,
