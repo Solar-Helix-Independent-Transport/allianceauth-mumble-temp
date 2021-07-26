@@ -1,6 +1,6 @@
 # Mumble Temp Links
 
-> ⚠️ This does nothing on it's own you also need to update your authenticator! [To my fork found here](https://gitlab.com/aaronkable/mumble-authenticator). More on that in the setup instructions below!
+> ⚠️ This does nothing on its own you also need to update your authenticator! [To my fork found here](https://gitlab.com/aaronkable/mumble-authenticator). More on that in the setup instructions below!
 
 This [Alliance Auth](https://gitlab.com/allianceauth/allianceauth) module lets you give temp access to your mumble service with ease.
 
@@ -82,10 +82,9 @@ Perm | Admin Site	 | Auth Site
 mumbletemps.create_new_links | None | Can create and delete Temp Links.
 
 # Preview
-## Managemrnt and Creatiom
+## Management and Creation
 ![image](https://i.imgur.com/Jl2ihH2.png)
 ## OPTIONAL Login Screen ( Non SSO mode )
 ![Login](https://i.imgur.com/BIRLFmq.png)
 ## Templink User View
 ![Demo](https://i.imgur.com/G86qAb8.png)
-
