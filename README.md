@@ -10,7 +10,7 @@ TempLink users will be given the group `Guest`, mumble ACL's can be setup to res
 The mumble chat command `!kicktemps` will purge the mumble server of all temp users, if they still have a valid Templink they will be able to reconect untill it either expires or is removed from the tool. Only members who have thw `Kick User` permission can use the command.
 
 # Setup
-> ⚠️This is assuming you already have configured a fully functioning mumbke service.
+> ⚠️This is assuming you already have configured a fully functioning mumble service.
 ## Auth Plugin
 1. `pip install allianceauth-mumbletemps`
 2. add `'mumbletemps',` to your `INSTALLED_APPS` in the local.py, i recomend it is at the top for menu ordering.
