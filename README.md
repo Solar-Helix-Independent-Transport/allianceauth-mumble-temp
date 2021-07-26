@@ -7,7 +7,7 @@ This [Alliance Auth](https://gitlab.com/allianceauth/allianceauth) module lets y
 # Usage
 A user with the create permission crates a link and copy's it to the people who need access,
 TempLink users will be given the group `Guest`, mumble ACL's can be setup to restrict access as required.
-The mumble chat command `!kicktemps` will purge the mumble server of all temp users, if they still have a valid Templink they will be able to reconnect until it either expires or is removed from the tool. Only members who have thw `Kick User` permission can use the command.
+The mumble chat command `!kicktemps` will purge the mumble server of all temp users, if they still have a valid Templink they will be able to reconnect until it either expires or is removed from the tool. Only members who have the `Kick User` permission can use the command.
 
 # Setup
 > ⚠️This is assuming you already have configured a fully functioning mumble service.
