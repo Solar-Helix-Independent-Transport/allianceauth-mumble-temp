@@ -1,13 +1,12 @@
 # Mumble Temp Links
 
-> ⚠️ This does nothing on its own you also need to update your authenticator! [To my fork found here](https://gitlab.com/aaronkable/mumble-authenticator). More on that in the setup instructions below!
+> ⚠️ This does nothing on it's own you also need to update your authenticator! [To my fork found here](https://gitlab.com/aaronkable/mumble-authenticator). More on that in the setup instructions below!
 
 This [Alliance Auth](https://gitlab.com/allianceauth/allianceauth) module lets you give temp access to your mumble service with ease.
 
 # Usage
 A user with the create permission creates a link and copies it to the people who need access,
 TempLink users will be given the group `Guest`, mumble ACL's can be setup to restrict access as required.
-
 The mumble chat command `!kicktemps` will purge the mumble server of all temp users, if they still have a valid Templink they will be able to reconect until it either expires or is removed from the tool. Only members who have the `Kick User` permission can use the command.
 
 # Setup
@@ -46,7 +45,6 @@ To enable people to not have to register on auth, ensure you have fully updated 
 1. edit your projects `urls.py` file:
 
 > it should look something like this, if yours is different only add the parts outlined below:
-
 ```python
 from django.conf.urls import include, url
 from allianceauth import urls
@@ -76,7 +74,7 @@ handler404 = 'allianceauth.views.Generic404Redirect'
 handler403 = 'allianceauth.views.Generic403Redirect'
 handler400 = 'allianceauth.views.Generic400Redirect' 
 ```
-2. restart services, and you're done.
+2. restart services and you're done.
 
 # Permissions
 Perm | Admin Site	 | Auth Site 
