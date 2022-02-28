@@ -1,6 +1,6 @@
 # Mumble Temp Links
 
-> ⚠️ This does nothing on its own you also need to update your authenticator! [To my fork found here](https://gitlab.com/aaronkable/mumble-authenticator). More on that in the setup instructions below!
+> ⚠️ This does nothing on it's own you also need to update your authenticator! [To my fork found here](https://gitlab.com/aaronkable/mumble-authenticator). More on that in the setup instructions below!
 
 This [Alliance Auth](https://gitlab.com/allianceauth/allianceauth) module lets you give temp access to your mumble service with ease.
 
@@ -36,13 +36,13 @@ To update your mumble authenticator if you git cloned the original repo we will 
 6. restart your authenticator with supervisor
 > ℹ️ The authenticator.log should show something like 
 > `Starting AllianceAuth mumble authenticator V:1.0.0 - TempLinks` 
-> if you are on the correct branch and version, if not you may still be running the default auth version and will need to investigate why. Users will get prompted for passwords when they try to connect with a temp link and you are not running this version. The Authenticator version needs to match this version!
+> If you are on the correct branch and version, if not you may still be running the default auth version and will need to investigate why. Users will get prompted for passwords when they try to connect with a temp link and you are not running this version. The Authenticator version needs to match this version!
 
 If you did not use the git clone method of installing the authenticator, simply copy the contents of [my fork found here](https://gitlab.com/aaronkable/mumble-authenticator) on top of your current install, **BE SURE TO BACKUP YOUR `authenticator.ini` BEFORE YOU START!**
 
 ## Auth Login Bypass
 To enable people to not have to register on auth, ensure you have fully updated `django-esi`
-1. edit your projects `urls.py` file:
+1. Edit your projects `urls.py` file:
 
 > It should look something like this, if yours is different only add the parts outlined below:
 ```python
@@ -76,7 +76,7 @@ handler404 = 'allianceauth.views.Generic404Redirect'
 handler403 = 'allianceauth.views.Generic403Redirect'
 handler400 = 'allianceauth.views.Generic400Redirect' 
 ```
-2. restart services, and you're done.
+2. Restart services and you're done.
 
 # Permissions
 Perm | Admin Site	 | Auth Site 
