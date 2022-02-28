@@ -58,7 +58,7 @@ handler404 = 'allianceauth.views.Generic404Redirect'
 handler403 = 'allianceauth.views.Generic403Redirect'
 handler400 = 'allianceauth.views.Generic400Redirect' 
 ```
-> edit it to add a new import and a new url
+> Edit it to add a new import and a new url
 ```python
 from django.conf.urls import include, url
 from allianceauth import urls
@@ -88,4 +88,3 @@ mumbletemps.create_new_links | None | Can create and delete Temp Links.
 ![Login](https://i.imgur.com/BIRLFmq.png)
 ## Templink User View
 ![Demo](https://i.imgur.com/G86qAb8.png)
-
