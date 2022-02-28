@@ -5,9 +5,10 @@
 This [Alliance Auth](https://gitlab.com/allianceauth/allianceauth) module lets you give temp access to your mumble service with ease.
 
 # Usage
-A user with the create permission crates a link and copy's it to the people who need access,
+A user with the create permission creates a link and copies it to the people who need access,
 TempLink users will be given the group `Guest`, mumble ACL's can be setup to restrict access as required.
-The mumble chat command `!kicktemps` will purge the mumble server of all temp users, if they still have a valid Templink they will be able to reconnect until it either expires or is removed from the tool. Only members who have the `Kick User` permission can use the command.
+
+The mumble chat command `!kicktemps` will purge the mumble server of all temp users, if they still have a valid Templink they will be able to reconect until it either expires or is removed from the tool. Only members who have the `Kick User` permission can use the command.
 
 # Setup
 > ⚠️This is assuming you already have configured a fully functioning mumble service.
@@ -38,13 +39,14 @@ To update your mumble authenticator if you git cloned the original repo we will 
 > `Starting AllianceAuth mumble authenticator V:1.0.0 - TempLinks` 
 > if you are on the correct branch and version, if not you may still be running the default auth version and will need to investigate why. Users will get prompted for passwords when they try to connect with a temp link and you are not running this version. The Authenticator version needs to match this version!
 
-If you did not use the git clone method of installing the authenticator, simply copy the contents of [my fork found here](https://gitlab.com/aaronkable/mumble-authenticator) over the top of your current install, **BE SURE TO BACKUP YOUR `authenticator.ini` BEFORE YOU START!**
+If you did not use the git clone method of installing the authenticator, simply copy the contents of [my fork found here](https://gitlab.com/aaronkable/mumble-authenticator) on top of your current install, **BE SURE TO BACKUP YOUR `authenticator.ini` BEFORE YOU START!**
 
 ## Auth Login Bypass
 To enable people to not have to register on auth, ensure you have fully updated `django-esi`
 1. edit your projects `urls.py` file:
 
-> It should look something like this, if yours is different only add the parts outlined below:
+> it should look something like this, if yours is different only add the parts outlined below:
+
 ```python
 from django.conf.urls import include, url
 from allianceauth import urls
