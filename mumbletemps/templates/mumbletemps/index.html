@@ -42,7 +42,7 @@
                 <h3 class="panel-title">New Link</h3>
             </div>
             <div class="panel-body text-center" style="min-height: 100px;">
-                <p>Expires in: <span id="countdown{{tl.link_ref}}hot"></span></span></p>
+                <p>Expires in: <span id="countdown{{tl.link_ref}}hot"></span></p>
                 <pre>{{ request.scheme }}://{{request.get_host}}{% url 'mumbletemps:join' tl.link_ref %}</pre>
                 <button class="btn btn-info col-md-12" id="clipboard-new" data-clipboard-text="{{ request.scheme }}://{{request.get_host}}{% url 'mumbletemps:join' tl.link_ref %}">Copy to Clipboard!</button>
             </div>
@@ -56,12 +56,14 @@
             <div class="panel-body" style="min-height: 100px;">
                 <table class="table table-striped">
                     <thead>
-                        <th></th>
-                        <th class="text-center">Creator</th>
-                        <th class="text-center">Key</th>
-                        <th class="text-center">Time Left</th>
-                        <th class="text-center">Copy</th>
-                        <th class="text-center">Nuke</th>
+                        <tr>
+                            <th></th>
+                            <th class="text-center">Creator</th>
+                            <th class="text-center">Key</th>
+                            <th class="text-center">Time Left</th>
+                            <th class="text-center">Copy</th>
+                            <th class="text-center">Nuke</th>
+                        </tr>
                     </thead>
                     <tbody>
                         {% for lnk in tl_list %}
@@ -86,10 +88,12 @@
                 <div class="panel-body" style="min-height: 100px;">
                     <table class="table table-striped">
                         <thead>
-                            <th></th>
-                            <th class="text-center">Creator</th>
-                            <th class="text-center">Key</th>
-                            <th class="text-center">Nuke</th>
+                            <tr>
+                                <th></th>
+                                <th class="text-center">Creator</th>
+                                <th class="text-center">Key</th>
+                                <th class="text-center">Nuke</th>
+                            </tr>
                         </thead>
                         <tbody>
                             {% for lnk in ex_tl_list %}
