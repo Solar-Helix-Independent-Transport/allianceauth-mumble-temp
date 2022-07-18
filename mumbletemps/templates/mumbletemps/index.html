@@ -1,25 +1,24 @@
 {% extends 'mumbletemps/base.html' %}
 {% load i18n %}
 {% load humanize %}
-{% load static %}
 {% load timetags %}
 
 {% block create %}
     <div class="col-md-6">
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <h3 class="panel-title text-center">Mumble Links</h3>            
+                <h3 class="panel-title text-center">Mumble Links</h3>
             </div>
-            <div class="panel-body text-center">  
+            <div class="panel-body text-center">
                 Temp Links Give Access to mumble with the <b class="text-success">Guest</b> Group for the preset time<br><br>Connected users <b class="text-warning">will not</b> be kicked at the end of this time period<br><br>Templink users can be kicked in mumble by typing <span class="badge badge-danger text-warning">!kicktemps</span> in mumble chat<br><br>There are <b class="text-warning">no restrictions</b> on who or how many can use a templink, share wisely.</div>
         </div>
     </div>
     <div class="col-md-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Create New Link</h3>            
+                <h3 class="panel-title">Create New Link</h3>
             </div>
-            <div class="panel-body text-center">  
+            <div class="panel-body text-center">
                 <p>Your link will be displayed on the next page for easy copy and paste</p>
                 <form action="/mumbletemps/" method="post">
                     {% csrf_token %}
@@ -29,8 +28,8 @@
                         <option value="6">6</option>
                         <option value="12">12</option>
                         <option value="24">24</option>
-                      </select>           
-                    <br>         
+                      </select>
+                    <br>
                     <input class="btn btn-primary col-md-12" type="submit" value="OK">
                 </form>
             </div>
@@ -40,9 +39,9 @@
     <div class="col-md-12">
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title">New Link</h3>            
+                <h3 class="panel-title">New Link</h3>
             </div>
-            <div class="panel-body text-center" style="min-height: 100px;">  
+            <div class="panel-body text-center" style="min-height: 100px;">
                 <p>Expires in: <span id="countdown{{tl.link_ref}}hot"></span></span></p>
                 <pre>{{ request.scheme }}://{{request.get_host}}{% url 'mumbletemps:join' tl.link_ref %}</pre>
                 <button class="btn btn-info col-md-12" id="clipboard-new" data-clipboard-text="{{ request.scheme }}://{{request.get_host}}{% url 'mumbletemps:join' tl.link_ref %}">Copy to Clipboard!</button>
@@ -52,9 +51,9 @@
     <div class="col-md-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Current Links</h3>            
+                <h3 class="panel-title">Current Links</h3>
             </div>
-            <div class="panel-body" style="min-height: 100px;">  
+            <div class="panel-body" style="min-height: 100px;">
                 <table class="table table-striped">
                     <thead>
                         <th></th>
@@ -82,9 +81,9 @@
         {% if ex_tl_list.count > 0 %}
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Expired Links</h3>            
+                    <h3 class="panel-title">Expired Links</h3>
                 </div>
-                <div class="panel-body" style="min-height: 100px;">  
+                <div class="panel-body" style="min-height: 100px;">
                     <table class="table table-striped">
                         <thead>
                             <th></th>
@@ -109,7 +108,7 @@
     </div>
 {% endblock %}
 
-{% block extra_javascript %}    
+{% block extra_javascript %}
 {% include 'bundles/clipboard-js.html' %}
 <script>
     var clipboard = new ClipboardJS('#clipboard-new');
@@ -118,7 +117,7 @@
     {% endfor %}
 </script>
 {% include 'bundles/moment-js.html' with locale=True %}
-<script src="{% static 'js/timers.js' %}"></script>
+{% include 'bundles/timers-js.html' %}
 <script type="text/javascript">
     var locale = "{{ LANGUAGE_CODE }}";
 
@@ -179,8 +178,8 @@
 
 {% endblock %}
 
-{% block extra_css %}    
+{% block extra_css %}
 {% endblock %}
 
-{% block extra_script %}    
+{% block extra_script %}
 {% endblock %}

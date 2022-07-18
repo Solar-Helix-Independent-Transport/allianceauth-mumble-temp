@@ -36,7 +36,7 @@
                         <br>
                     <a class="btn btn-primary" href="mumble://{{ connect_url }}">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Icons_mumble.svg/400px-Icons_mumble.svg.png" alt="Mumble" height="64" width="64" style="margin: 15px;">
-                        
+
                         <span style="margin: 15px;">Click to Join Mumble as: <b>{{temp_user.name}}</b></span><br>
                     </a>
                     <div class="clearfix"></div><br>
@@ -59,7 +59,7 @@
     </div>
 </body>
 {% include 'bundles/moment-js.html' with locale=True %}
-<script src="{% static 'js/timers.js' %}"></script>
+{% include 'bundles/timers-js.html' %}
 <script type="text/javascript">
     var locale = "{{ LANGUAGE_CODE }}";
 
