@@ -13,12 +13,12 @@
     <meta name="author" content="">
     {% include 'allianceauth/icons.html' %}
 
-    <title>{% block title %}{% block page_title %}{% endblock page_title %} - Alliance Auth{% endblock title %}</title>
+    <title>{% translate "Mumble Temporary Access" %} - {{ SITE_NAME }}</title>
 
     {% include 'bundles/bootstrap-css.html' %}
     {% include 'bundles/fontawesome.html' %}
 
-    <link href="{% static 'css/auth-base.css' %}" type="text/css" rel="stylesheet">
+    <link href="{% static 'allianceauth/css/auth-base.css' %}" type="text/css" rel="stylesheet">
 </head>
 <body>
 
@@ -36,7 +36,7 @@
                         <br>
                     <a class="btn btn-primary" href="mumble://{{ connect_url }}">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Icons_mumble.svg/400px-Icons_mumble.svg.png" alt="Mumble" height="64" width="64" style="margin: 15px;">
-                        
+
                         <span style="margin: 15px;">Click to Join Mumble as: <b>{{temp_user.name}}</b></span><br>
                     </a>
                     <div class="clearfix"></div><br>
@@ -59,7 +59,7 @@
     </div>
 </body>
 {% include 'bundles/moment-js.html' with locale=True %}
-<script src="{% static 'js/timers.js' %}"></script>
+{% include 'bundles/timers-js.html' %}
 <script type="text/javascript">
     var locale = "{{ LANGUAGE_CODE }}";
 
