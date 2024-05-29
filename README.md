@@ -50,7 +50,7 @@ The mumble chat command `!kicktemps` will purge the mumble server of all temp us
 
 Make sure you're in the virtual environment (venv) of your Alliance Auth installation. Then install the latest release directly from PyPi.
 
-```bash
+```shell
 pip install allianceauth-mumbletemps
 ```
 
@@ -87,7 +87,7 @@ CELERYBEAT_SCHEDULE["mumbletemps_tidy_up_temp_links"] = {
 
 Run static files collection and migrations.
 
-```bash
+```shell
 python manage.py collectstatic --noinput
 python manage.py migrate
 ```
@@ -133,7 +133,7 @@ on top of your current installation.
 
 Restart your Alliance Auth instance to apply the changes.
 
-```bash
+```shell
 sudo systemctl restart supervisor.service
 ```
 
