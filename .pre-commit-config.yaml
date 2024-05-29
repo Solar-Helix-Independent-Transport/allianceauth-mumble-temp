@@ -215,13 +215,6 @@ repos:
           - mdformat-black==0.1.1  # Mdformat plugin to Blacken Python code blocks » https://github.com/hukkin/mdformat-black/tags
           - mdformat-shfmt==0.1.0  # Mdformat plugin to format shell code blocks » https://github.com/hukkin/mdformat-shfmt/tags
 
-  - repo: https://github.com/tox-dev/tox-ini-fmt
-    rev: 1.3.1
-    hooks:
-      - id: tox-ini-fmt
-        name: tox.ini formatter
-        description: Format the tox.ini file.
-
   - repo: https://github.com/tox-dev/pyproject-fmt
     rev: 1.8.0
     hooks:
@@ -230,8 +223,6 @@ repos:
         description: Format the pyproject.toml file.
         args:
           - --indent=4
-        additional_dependencies:
-          - tox==4.15.0  # https://github.com/tox-dev/tox/releases/latest
 
   - repo: https://github.com/abravalheri/validate-pyproject
     rev: v0.16
