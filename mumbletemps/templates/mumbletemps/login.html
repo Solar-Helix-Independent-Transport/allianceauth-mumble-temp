@@ -53,12 +53,12 @@
                             </form>
 
                             <div class="col-md-4 col-md-offset-4 col-sm-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading text-center">
+                                <div class="card">
+                                    <div class="card-header text-center">
                                         <h4>No SSO</h4>
                                     </div>
 
-                                    <div class="panel-body text-left">
+                                    <div class="card-body text-left">
                                         <div class="form-group">
                                             <form action="{% url 'mumbletemps:join' link.link_ref %}" method="post">
                                                 {% csrf_token %}
@@ -69,12 +69,12 @@
 
                                                 <p>
                                                     <label for="name">Name</label>
-                                                    <input type="text" class="form-control" id="name" placeholder="Who are you?">
+                                                    <input type="text" class="form-control" name="name" id="name" placeholder="Who are you?">
                                                 </p>
 
                                                 <p>
                                                     <label for="association">Association</label>
-                                                    <input type="text" class="form-control" id="association" placeholder="Who are you with?">
+                                                    <input type="text" class="form-control" name="association" id="association" placeholder="Who are you with?">
                                                 </p>
 
                                                 <button type="submit" value="Submit" class="btn col-md-12 btn-primary">Login Without SSO</button>
@@ -93,6 +93,7 @@
         {% include "bundles/timers-js.html" %}
 
         <script>
+            /* global moment */
             const locale = '{{ LANGUAGE_CODE }}';
             const timers = [
                 {

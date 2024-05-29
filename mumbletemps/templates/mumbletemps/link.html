@@ -52,12 +52,12 @@
                             </p>
 
                             <div class="col-md-4 col-md-offset-4 col-sm-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading text-center">
+                                <div class="card">
+                                    <div class="card-header text-center">
                                         <h4>Manually Connect</h4>
                                     </div>
 
-                                    <div class="panel-body">
+                                    <div class="card-body">
                                         <p>If you have problems with the application link above, please use the following in Mumble's connection dialog.</p>
                                         <p>Mumble Url: <span class="badge">{{ mumble }}</span></p>
                                         <p>Username: <span class="badge">{{ temp_user.username }}</span></p>
@@ -75,6 +75,7 @@
         {% include "bundles/timers-js.html" %}
 
         <script>
+            /* global moment */
             const locale = '{{ LANGUAGE_CODE }}';
             const timers = [
                 {

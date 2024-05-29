@@ -5,13 +5,13 @@
 {% load timetags %}
 
 {% block create %}
-    <div class="col-md-6">
-        <div class="panel panel-warning">
-            <div class="panel-heading">
-                <h3 class="panel-title text-center">Mumble Links</h3>
+    <div class="col-md-6 mb-2">
+        <div class="card h-100">
+            <div class="card-header bg-warning">
+                <div class="card-title mb-0">Mumble Temporary Links</div>
             </div>
 
-            <div class="panel-body text-center">
+            <div class="card-body text-center">
                 <p>
                     Temp Links Give Access to mumble with the <b class="text-success">Guest</b> Group for the preset time.
                 </p>
@@ -21,7 +21,7 @@
                 </p>
 
                 <p>
-                    Templink users can be kicked in mumble by typing <span class="badge badge-danger text-warning">!kicktemps</span> in mumble chat.
+                    Templink users can be kicked in mumble by typing <span class="badge bg-danger">!kicktemps</span> in mumble chat.
                 </p>
 
                 <p>
@@ -31,40 +31,42 @@
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Create New Link</h3>
+    <div class="col-md-6 mt-sm-2 mt-md-0 mb-2">
+        <div class="card h-100">
+            <div class="card-header">
+                <div class="card-title mb-0">Create New Link</div>
             </div>
 
-            <div class="panel-body text-center">
+            <div class="card-body text-center">
                 <p>Your link will be displayed on the next page for an easy copy and paste.</p>
 
                 <form action="{% url 'mumbletemps:index' %}" method="post">
                     {% csrf_token %}
 
-                    <label for="time">Duration (hours)</label>
-                    <select class="form-control" id="time">
-                        <option value="3">3</option>
-                        <option value="6">6</option>
-                        <option value="12">12</option>
-                        <option value="24">24</option>
-                    </select>
+                    <div class="mb-3">
+                        <label for="time">Duration (hours)</label>
+                        <select class="form-control" name="time" id="time">
+                            <option value="3">3</option>
+                            <option value="6">6</option>
+                            <option value="12">12</option>
+                            <option value="24">24</option>
+                        </select>
+                    </div>
 
-                    <input class="btn btn-primary col-md-12" type="submit" value="OK">
+                    <input class="btn btn-primary" type="submit" value="OK">
                 </form>
             </div>
         </div>
     </div>
 
     {% if tl %}
-        <div class="col-md-12">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">New Link</h3>
+        <div class="my-2">
+            <div class="card">
+                <div class="card-header bg-success">
+                    <div class="card-title mb-0">New link</div>
                 </div>
 
-                <div class="panel-body text-center" style="min-height: 100px;">
+                <div class="card-body text-center" style="min-height: 100px;">
                     <p>
                         Expires in: <span id="countdown{{ tl.link_ref }}hot"></span>
                     </p>
@@ -72,7 +74,7 @@
                     <pre>{{ SITE_URL }}{% url 'mumbletemps:join' tl.link_ref %}</pre>
 
                     <button
-                        class="btn btn-info col-md-12"
+                        class="btn btn-info"
                         id="clipboard-new"
                         data-clipboard-text="{{ SITE_URL }}{% url 'mumbletemps:join' tl.link_ref %}"
                     >
@@ -83,13 +85,13 @@
         </div>
     {% endif %}
 
-    <div class="col-md-12">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Current Links</h3>
+    <div class="my-2">
+        <div class="card pb-2">
+            <div class="card-header">
+                <div class="card-title mb-0">Current Links</div>
             </div>
 
-            <div class="panel-body" style="min-height: 100px;">
+            <div class="card-body" style="min-height: 100px;">
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -139,14 +141,16 @@
                 </table>
             </div>
         </div>
+    </div>
 
-        {% if ex_tl_list.count > 0 %}
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Expired Links</h3>
+    {% if ex_tl_list.count > 0 %}
+        <div class="my-2">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title mb-0">Expired Links</div>
                 </div>
 
-                <div class="panel-body" style="min-height: 100px;">
+                <div class="card-body" style="min-height: 100px;">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -183,14 +187,15 @@
                     </table>
                 </div>
             </div>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block extra_javascript %}
     {% include 'bundles/clipboard-js.html' %}
 
     <script>
+        /* global ClipboardJS, moment */
         const clipboard = new ClipboardJS('#clipboard-new');
 
         {% for lnk in tl_list %}
