@@ -1,154 +1,130 @@
-{% load humanize %}
-{% load timetags %}
+{% extends "mumbletemps/base.html" %}
+
 {% load static %}
 {% load i18n %}
-{% load navactive %}
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
+{% load timetags %}
 
-        {% include "allianceauth/icons.html" %}
+{% block mumbletemps %}
+    <div class="col-md-12 text-center">
+        <div class="mumbletemps-sso-login mb-3">
+            <p>
+                <img class="ra-avatar img-circle" src="{{ link.creator.portrait_url_128 }}" alt="{{ link.creator.character_name }}">
+            </p>
 
-        <title>{% translate "Mumble Temporary Access" %} - {{ SITE_NAME }}</title>
+            <h4>{{ link.creator.character_name }} has invited you to join Mumble!</h4>
 
-        {% include 'bundles/bootstrap-css.html' %}
-        {% include 'bundles/fontawesome.html' %}
+            <p>Time Remaining: <span id="countdown{{ link.link_ref }}"></span></p>
+            <p><span class="label label-info">Link Ref: {{ link.link_ref }}</span></p>
 
-        <link href="{% static 'allianceauth/css/auth-base.css' %}" rel="stylesheet">
-    </head>
+            <form action="{% url 'mumbletemps:join' link.link_ref %}" method="post">
+                {% csrf_token %}
 
-    <body>
-        <div id="wrapper" class="container">
-            <!-- Navigation -->
-            {% include "allianceauth/top-menu.html" %}
+                <input type="hidden" name="sso" value="True">
+                <input
+                    type="image"
+                    class="img-responsive center-block"
+                    src="{% static 'allianceauth/authentication/img/sso/EVE_SSO_Login_Buttons_Large_Black.png' %}"
+                    alt="Login with SSO"
+                >
+            </form>
+        </div>
 
-            <div class="row" id="site-body-wrapper">
-                <div class="col-sm-12">
-                    <div style="margin-top:25px">
-                        <div class="col-md-12 text-center">
-                            <p>
-                                <img class="ra-avatar img-circle" src="{{ link.creator.portrait_url_128 }}" alt="{{ link.creator.character_name }}">
-                            </p>
+        <div class="mumbletemps-non-sso-login">
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <div class="card-title mb-0">Non SSO Login</div>
+                        </div>
 
-                            <h4>{{ link.creator.character_name }} has invited you to join Mumble!</h4>
+                        <div class="card-body text-start">
+                            <div class="form-group">
+                                <form action="{% url 'mumbletemps:join' link.link_ref %}" method="post">
+                                    {% csrf_token %}
 
-                            <p>Time Remaining: <span id="countdown{{ link.link_ref }}"></span></p>
-                            <p><span class="label label-info">Link Ref: {{ link.link_ref }}</span></p>
+                                    <input type="hidden" name="sso" value="False">
 
-                            <form action="{% url 'mumbletemps:join' link.link_ref %}" method="post">
-                                {% csrf_token %}
+                                    <p class="text-center">If you cannot SSO with your EVE character, You can enter your own details below.</p>
 
-                                <input type="hidden" name="sso" value="True">
-                                <input
-                                    type="image"
-                                    class="img-responsive center-block"
-                                    src="{% static 'allianceauth/authentication/img/sso/EVE_SSO_Login_Buttons_Large_Black.png' %}"
-                                    alt="Login with SSO"
-                                >
-                            </form>
+                                    <p>
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="Who are you?">
+                                    </p>
 
-                            <div class="col-md-4 col-md-offset-4 col-sm-12">
-                                <div class="card">
-                                    <div class="card-header text-center">
-                                        <h4>No SSO</h4>
-                                    </div>
+                                    <p>
+                                        <label for="association">Association</label>
+                                        <input type="text" class="form-control" name="association" id="association" placeholder="Who are you with?">
+                                    </p>
 
-                                    <div class="card-body text-left">
-                                        <div class="form-group">
-                                            <form action="{% url 'mumbletemps:join' link.link_ref %}" method="post">
-                                                {% csrf_token %}
-
-                                                <input type="hidden" name="sso" value="False">
-
-                                                <p class="text-center">If you cannot SSO with your EVE character, You can enter your own details below.</p>
-
-                                                <p>
-                                                    <label for="name">Name</label>
-                                                    <input type="text" class="form-control" name="name" id="name" placeholder="Who are you?">
-                                                </p>
-
-                                                <p>
-                                                    <label for="association">Association</label>
-                                                    <input type="text" class="form-control" name="association" id="association" placeholder="Who are you with?">
-                                                </p>
-
-                                                <button type="submit" value="Submit" class="btn col-md-12 btn-primary">Login Without SSO</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                                    <button type="submit" value="Submit" class="btn btn-primary">Login Without SSO</button>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        {% include "bundles/moment-js.html" with locale=True %}
-        {% include "bundles/timers-js.html" %}
+    {% include "bundles/moment-js.html" with locale=True %}
+    {% include "bundles/timers-js.html" %}
 
-        <script>
-            /* global moment */
-            const locale = '{{ LANGUAGE_CODE }}';
-            const timers = [
-                {
-                    'id': '{{ link.link_ref }}',
-                    'targetDate': moment('{{ link.expires|print_timestamp| date:"c" }}'),
-                    'expired': false
+    <script>
+        /* global moment */
+        const locale = '{{ LANGUAGE_CODE }}';
+        const timers = [
+            {
+                'id': '{{ link.link_ref }}',
+                'targetDate': moment('{{ link.expires|print_timestamp| date:"c" }}'),
+                'expired': false
+            }
+        ];
+
+        moment.locale(locale);
+
+        /**
+         * Update a timer
+         *
+         * @param timer
+         */
+        const updateTimer = (timer) => {
+            if (timer.targetDate.isAfter(Date.now())) {
+                const duration = moment.duration(timer.targetDate - moment(), 'milliseconds');
+
+                document.getElementById("countdown" + timer.id).innerHTML = getDurationString(duration);
+            } else {
+                timer.expired = true;
+
+                document.getElementById("countdown" + timer.id).innerHTML = "";
+            }
+        };
+
+        /**
+         * Update all timers
+         */
+        const updateAllTimers = () => {
+            const l = timers.length;
+
+            for (let i=0; i < l; ++i) {
+                if (timers[i].expired) {
+                    continue;
                 }
-            ];
 
-            moment.locale(locale);
+                updateTimer(timers[i]);
+            }
+        };
 
-            /**
-             * Update a timer
-             *
-             * @param timer
-             */
-            const updateTimer = (timer) => {
-                if (timer.targetDate.isAfter(Date.now())) {
-                    const duration = moment.duration(timer.targetDate - moment(), 'milliseconds');
+        /**
+         * Timed update
+         */
+        const timedUpdate = () => {
+            updateAllTimers();
+        };
 
-                    document.getElementById("countdown" + timer.id).innerHTML = getDurationString(duration);
-                } else {
-                    timer.expired = true;
+        // Set initial values
+        timedUpdate();
 
-                    document.getElementById("countdown" + timer.id).innerHTML = "";
-                }
-            };
-
-            /**
-             * Update all timers
-             */
-            const updateAllTimers = () => {
-                const l = timers.length;
-
-                for (let i=0; i < l; ++i) {
-                    if (timers[i].expired) {
-                        continue;
-                    }
-
-                    updateTimer(timers[i]);
-                }
-            };
-
-            /**
-             * Timed update
-             */
-            const timedUpdate = () => {
-                updateAllTimers();
-            };
-
-            // Set initial values
-            timedUpdate();
-
-            // Start timed updates
-            setInterval(timedUpdate, 1000);
-        </script>
-    </body>
-</html>
+        // Start timed updates
+        setInterval(timedUpdate, 1000);
+    </script>
+{% endblock mumbletemps %}

@@ -4,7 +4,7 @@
 {% load humanize %}
 {% load timetags %}
 
-{% block create %}
+{% block mumbletemps %}
     <div class="col-md-6 mb-2">
         <div class="card h-100">
             <div class="card-header bg-warning">
@@ -189,7 +189,7 @@
             </div>
         </div>
     {% endif %}
-{% endblock %}
+{% endblock mumbletemps %}
 
 {% block extra_javascript %}
     {% include 'bundles/clipboard-js.html' %}
@@ -275,4 +275,4 @@
         setInterval(timedUpdate, 1000);
 
     </script>
-{% endblock %}
+{% endblock extra_javascript %}

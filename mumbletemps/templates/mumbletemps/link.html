@@ -1,136 +1,116 @@
-{% load humanize %}
-{% load timetags %}
-{% load static %}
+{% extends "mumbletemps/base.html" %}
+
 {% load i18n %}
-{% load navactive %}
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
+{% load timetags %}
 
-        {% include "allianceauth/icons.html" %}
+{% block mumbletemps %}
+    <div class="text-center">
+        <p>
+            <img class="ra-avatar img-circle" src="{{ link.creator.portrait_url_128 }}" alt="{{ link.creator.character_name }}">
+        </p>
 
-        <title>{% translate "Mumble Temporary Access" %} - {{ SITE_NAME }}</title>
+        <h4>
+            {% blocktranslate with character=link.creator.character_name %}
+                {{ character }} has invited you to join Mumble!
+            {% endblocktranslate %}
+        </h4>
 
-        {% include "bundles/bootstrap-css.html" %}
-        {% include "bundles/fontawesome.html" %}
+        <p>Time Remaining: <span id="countdown{{ link.link_ref }}"></span></p>
+        <p><span class="label label-info">Link Ref: {{link.link_ref}}</span></p>
 
-        <link href="{% static "allianceauth/css/auth-base.css" %}" rel="stylesheet">
-    </head>
+        <p>
+            <a class="btn btn-primary" href="mumble://{{ connect_url }}">
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Icons_mumble.svg/400px-Icons_mumble.svg.png"
+                    alt="Mumble"
+                    height="64"
+                    width="64"
+                    style="margin: 15px;"
+                >
 
-    <body>
-        <div id="wrapper" class="container">
-            <!-- Navigation -->
-            {% include "allianceauth/top-menu.html" %}
+                <span style="margin: 15px;">
+                    Click to Join Mumble as: <b>{{ temp_user.name }}</b>
+                </span>
+            </a>
+        </p>
 
-            <div class="row" id="site-body-wrapper">
-                <div class="col-sm-12">
-                    <div style="margin-top:25px">
-                        <div class="col-md-12 text-center">
-                            <img class="ra-avatar img-circle" src="{{ link.creator.portrait_url_128 }}" alt="{{ link.creator.character_name }}"><br><br>
-                            <h4>{{ link.creator.character_name }} has invited you to join Mumble!</h4>
-                            <p>Time Remaining: <span id="countdown{{ link.link_ref }}"></span></p>
-                            <p><span class="label label-info">Link Ref: {{link.link_ref}}</span></p>
-                            <p>
-                                <a class="btn btn-primary" href="mumble://{{ connect_url }}">
-                                    <img
-                                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Icons_mumble.svg/400px-Icons_mumble.svg.png"
-                                        alt="Mumble"
-                                        height="64"
-                                        width="64"
-                                        style="margin: 15px;"
-                                    >
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <div class="card-title mb-0">Manually Connect</div>
+                    </div>
 
-                                    <span style="margin: 15px;">
-                                        Click to Join Mumble as: <b>{{ temp_user.name }}</b>
-                                    </span>
-                                </a>
-                            </p>
-
-                            <div class="col-md-4 col-md-offset-4 col-sm-12">
-                                <div class="card">
-                                    <div class="card-header text-center">
-                                        <h4>Manually Connect</h4>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <p>If you have problems with the application link above, please use the following in Mumble's connection dialog.</p>
-                                        <p>Mumble Url: <span class="badge">{{ mumble }}</span></p>
-                                        <p>Username: <span class="badge">{{ temp_user.username }}</span></p>
-                                        <p>Password: <span class="badge">{{ temp_user.password }}</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="card-body">
+                        <p>If you have problems with the application link above, please use the following in Mumble's connection dialog.</p>
+                        <p>Mumble Url: <span class="badge">{{ mumble }}</span></p>
+                        <p>Username: <span class="badge">{{ temp_user.username }}</span></p>
+                        <p>Password: <span class="badge">{{ temp_user.password }}</span></p>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        {% include "bundles/moment-js.html" with locale=True %}
-        {% include "bundles/timers-js.html" %}
+    {% include "bundles/moment-js.html" with locale=True %}
+    {% include "bundles/timers-js.html" %}
 
-        <script>
-            /* global moment */
-            const locale = '{{ LANGUAGE_CODE }}';
-            const timers = [
-                {
-                    'id': '{{ link.link_ref }}',
-                    'targetDate': moment('{{ link.expires|print_timestamp| date:"c" }}'),
-                    'expired': false
+    <script>
+        /* global moment */
+        const locale = '{{ LANGUAGE_CODE }}';
+        const timers = [
+            {
+                'id': '{{ link.link_ref }}',
+                'targetDate': moment('{{ link.expires|print_timestamp| date:"c" }}'),
+                'expired': false
+            }
+        ];
+
+        moment.locale(locale);
+
+        /**
+         * Update a timer
+         *
+         * @param timer
+         */
+        const updateTimer = (timer) => {
+            if (timer.targetDate.isAfter(Date.now())) {
+                const duration = moment.duration(timer.targetDate - moment(), 'milliseconds');
+
+                document.getElementById("countdown" + timer.id).innerHTML = getDurationString(duration);
+            } else {
+                timer.expired = true;
+
+                document.getElementById("countdown" + timer.id).innerHTML = "";
+            }
+        };
+
+        /**
+         * Update all timers
+         */
+        const updateAllTimers = () => {
+            const l = timers.length;
+
+            for (let i=0; i < l; ++i) {
+                if (timers[i].expired) {
+                    continue;
                 }
-            ];
 
-            moment.locale(locale);
+                updateTimer(timers[i]);
+            }
+        };
 
-            /**
-             * Update a timer
-             *
-             * @param timer
-             */
-            const updateTimer = (timer) => {
-                if (timer.targetDate.isAfter(Date.now())) {
-                    const duration = moment.duration(timer.targetDate - moment(), 'milliseconds');
+        /**
+         * Timed update
+         */
+        const timedUpdate = () => {
+            updateAllTimers();
+        };
 
-                    document.getElementById("countdown" + timer.id).innerHTML = getDurationString(duration);
-                } else {
-                    timer.expired = true;
+        // Set initial values
+        timedUpdate();
 
-                    document.getElementById("countdown" + timer.id).innerHTML = "";
-                }
-            };
-
-            /**
-             * Update all timers
-             */
-            const updateAllTimers = () => {
-                const l = timers.length;
-
-                for (let i=0; i < l; ++i) {
-                    if (timers[i].expired) {
-                        continue;
-                    }
-
-                    updateTimer(timers[i]);
-                }
-            };
-
-            /**
-             * Timed update
-             */
-            const timedUpdate = () => {
-                updateAllTimers();
-            };
-
-            // Set initial values
-            timedUpdate();
-
-            // Start timed updates
-            setInterval(timedUpdate, 1000);
-        </script>
-    </body>
-</html>
+        // Start timed updates
+        setInterval(timedUpdate, 1000);
+    </script>
+{% endblock mumbletemps %}
