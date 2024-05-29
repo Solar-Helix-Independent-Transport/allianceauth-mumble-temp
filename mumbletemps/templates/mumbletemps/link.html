@@ -16,8 +16,8 @@
             {% endblocktranslate %}
         </h4>
 
-        <p>Time Remaining: <span id="countdown{{ link.link_ref }}"></span></p>
-        <p><span class="label label-info">Link Ref: {{link.link_ref}}</span></p>
+        <p>{% translate "Time Remaining" %}: <span id="countdown{{ link.link_ref }}"></span></p>
+        <p><span class="label label-info">{% translate "Link Ref" %}: {{link.link_ref}}</span></p>
 
         <p>
             <a class="btn btn-primary" href="mumble://{{ connect_url }}">
@@ -30,7 +30,7 @@
                 >
 
                 <span style="margin: 15px;">
-                    Click to Join Mumble as: <b>{{ temp_user.name }}</b>
+                    {% translate "Click to Join Mumble as" %}: <b>{{ temp_user.name }}</b>
                 </span>
             </a>
         </p>
@@ -39,14 +39,14 @@
             <div class="col-md-10 col-lg-8">
                 <div class="card">
                     <div class="card-header text-center">
-                        <div class="card-title mb-0">Manually Connect</div>
+                        <div class="card-title mb-0">{% translate "Manually Connect" %}</div>
                     </div>
 
                     <div class="card-body">
-                        <p>If you have problems with the application link above, please use the following in Mumble's connection dialog.</p>
-                        <p>Mumble Url: <span class="badge">{{ mumble }}</span></p>
-                        <p>Username: <span class="badge">{{ temp_user.username }}</span></p>
-                        <p>Password: <span class="badge">{{ temp_user.password }}</span></p>
+                        <p>{% translate "If you have problems with the application link above, please use the following in Mumble's connection dialog." %}</p>
+                        <p>{% translate "Mumble URL" %}: <span class="badge">{{ mumble }}</span></p>
+                        <p>{% translate "Username" %}: <span class="badge">{{ temp_user.username }}</span></p>
+                        <p>{% translate "Password" %}: <span class="badge">{{ temp_user.password }}</span></p>
                     </div>
                 </div>
             </div>

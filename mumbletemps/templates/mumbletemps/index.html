@@ -8,24 +8,24 @@
     <div class="col-md-6 mb-2">
         <div class="card h-100">
             <div class="card-header bg-warning">
-                <div class="card-title mb-0">Mumble Temporary Links</div>
+                <div class="card-title mb-0">{% translate "Mumble Temporary Links" %}</div>
             </div>
 
             <div class="card-body text-center">
                 <p>
-                    Temp Links Give Access to mumble with the <b class="text-success">Guest</b> Group for the preset time.
+                    {% translate 'Temp Links Give Access to mumble with the <b class="text-success">Guest</b> Group for the preset time.' %}
                 </p>
 
                 <p>
-                    Connected users <b class="text-warning">will not</b> be kicked at the end of this period.
+                    {% translate 'Connected users <b class="text-warning">will not</b> be kicked at the end of this period.' %}
                 </p>
 
                 <p>
-                    Templink users can be kicked in mumble by typing <span class="badge bg-danger">!kicktemps</span> in mumble chat.
+                    {% translate 'Templink users can be kicked in mumble by typing <span class="badge bg-danger">!kicktemps</span> in mumble chat.' %}
                 </p>
 
                 <p>
-                    There are <b class="text-warning">no restrictions</b> on who or how many can use a templink, share wisely.
+                    {% translate 'There are <b class="text-warning">no restrictions</b> on who or how many can use a templink, share wisely.' %}
                 </p>
             </div>
         </div>
@@ -34,17 +34,17 @@
     <div class="col-md-6 mt-sm-2 mt-md-0 mb-2">
         <div class="card h-100">
             <div class="card-header">
-                <div class="card-title mb-0">Create New Link</div>
+                <div class="card-title mb-0">{% translate "Create New Link" %}</div>
             </div>
 
             <div class="card-body text-center">
-                <p>Your link will be displayed on the next page for an easy copy and paste.</p>
+                <p>{% translate "Your link will be displayed on the next page for an easy copy and paste." %}</p>
 
                 <form action="{% url 'mumbletemps:index' %}" method="post">
                     {% csrf_token %}
 
                     <div class="mb-3">
-                        <label for="time">Duration (hours)</label>
+                        <label for="time">{% translate "Duration (hours)" %}</label>
                         <select class="form-control" name="time" id="time">
                             <option value="3">3</option>
                             <option value="6">6</option>
@@ -53,7 +53,7 @@
                         </select>
                     </div>
 
-                    <input class="btn btn-primary" type="submit" value="OK">
+                    <input class="btn btn-primary" type="submit" value="{% translate 'OK' %}">
                 </form>
             </div>
         </div>
@@ -63,12 +63,12 @@
         <div class="my-2">
             <div class="card">
                 <div class="card-header bg-success">
-                    <div class="card-title mb-0">New link</div>
+                    <div class="card-title mb-0">{% translate "New Link" %}</div>
                 </div>
 
                 <div class="card-body text-center" style="min-height: 100px;">
                     <p>
-                        Expires in: <span id="countdown{{ tl.link_ref }}hot"></span>
+                        {% translate "Expires in" %}: <span id="countdown{{ tl.link_ref }}hot"></span>
                     </p>
 
                     <pre>{{ SITE_URL }}{% url 'mumbletemps:join' tl.link_ref %}</pre>
@@ -78,7 +78,7 @@
                         id="clipboard-new"
                         data-clipboard-text="{{ SITE_URL }}{% url 'mumbletemps:join' tl.link_ref %}"
                     >
-                        Copy to Clipboard!
+                        {% translate "Copy to Clipboard!" %}
                     </button>
                 </div>
             </div>
@@ -88,7 +88,7 @@
     <div class="my-2">
         <div class="card pb-2">
             <div class="card-header">
-                <div class="card-title mb-0">Current Links</div>
+                <div class="card-title mb-0">{% translate "Active Links" %}</div>
             </div>
 
             <div class="card-body" style="min-height: 100px;">
@@ -96,11 +96,11 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th class="text-center">Creator</th>
-                            <th class="text-center">Key</th>
-                            <th class="text-center">Time Left</th>
-                            <th class="text-center">Copy</th>
-                            <th class="text-center">Nuke</th>
+                            <th class="text-center">{% translate "Creator" %}</th>
+                            <th class="text-center">{% translate "Key" %}</th>
+                            <th class="text-center">{% translate "Time Left" %}</th>
+                            <th class="text-center">{% translate "Copy" %}</th>
+                            <th class="text-center">{% translate "Nuke" %}</th>
                         </tr>
                     </thead>
 
@@ -126,13 +126,13 @@
                                         class="btn btn-info"
                                         id="clipboard-{{ lnk.link_ref }}" data-clipboard-text="{{ SITE_URL }}{% url 'mumbletemps:join' lnk.link_ref %}"
                                     >
-                                        Copy to Clipboard!
+                                        {% translate "Copy to Clipboard!" %}
                                     </button>
                                 </td>
 
                                 <td class="text-center">
                                     <a class="btn btn-danger" href="{% url 'mumbletemps:nuke' lnk.link_ref %}">
-                                        Nuke Link!
+                                        {% translate "Nuke Link!" %}
                                     </a>
                                 </td>
                             </tr>
@@ -147,7 +147,7 @@
         <div class="my-2">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title mb-0">Expired Links</div>
+                    <div class="card-title mb-0">{% translate "Expired Links" %}</div>
                 </div>
 
                 <div class="card-body" style="min-height: 100px;">
@@ -155,9 +155,9 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th class="text-center">Creator</th>
-                                <th class="text-center">Key</th>
-                                <th class="text-center">Nuke</th>
+                                <th class="text-center">{% translate "Creator" %}</th>
+                                <th class="text-center">{% translate "Key" %}</th>
+                                <th class="text-center">{% translate "Nuke" %}</th>
                             </tr>
                         </thead>
 
@@ -178,7 +178,7 @@
 
                                     <td class="text-center">
                                         <a class="btn btn-danger" href="{% url 'mumbletemps:nuke' lnk.link_ref %}">
-                                            Nuke Link!
+                                            {% translate "Nuke Link!" %}
                                         </a>
                                     </td>
                                 </tr>
