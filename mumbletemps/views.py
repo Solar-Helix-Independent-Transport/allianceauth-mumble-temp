@@ -20,24 +20,26 @@ from esi.decorators import _check_callback
 import datetime
 
 
-class psudo_profile:
+class PseudoProfile:
     def __init__(self, main):
         self.main_character = main
         self.state = get_guest_state()
 
 
-class psudo_user:
+class PseudoUser:
     def __init__(self, main, username):
         self.username = username
-        self.profile = psudo_profile(main)
+        self.profile = PseudoProfile(main)
 
 
 @login_required
 @permission_required("mumbletemps.create_new_links")
 def index(request):
     tl = None
+
     if request.method == "POST":
         duration = request.POST.get("time")
+
         if duration in ["3", "6", "12", "24"]:
             expiry = datetime.datetime.utcnow().replace(
                 tzinfo=datetime.timezone.utc
@@ -66,47 +68,52 @@ def index(request):
         "tl_list": tl_list,
         "ex_tl_list": ex_tl_list,
     }
-    return render(request, "mumbletemps/index.html", context)
+
+    return render(
+        request=request, template_name="mumbletemps/index.html", context=context
+    )
 
 
 def link(request, link_ref):
-    link = None
     try:
-        link = TempLink.objects.get(link_ref=link_ref)
+        templink = TempLink.objects.get(link_ref=link_ref)
     except ObjectDoesNotExist:
         raise Http404("Temp Link Does not Exist")
 
-    token = _check_callback(request)
+    token = _check_callback(request=request)
     if token:
-        return link_sso(request, token, link)
+        return link_sso(request=request, token=token, link=templink)
 
     if app_settings.MUMBLE_TEMPS_FORCE_SSO:  # default always SSO
-        # prompt the user to login for a new token
-        return sso_redirect(request, scopes=["publicData"])
+        # prompt the user to log in for a new token
+        return sso_redirect(request=request, scopes=["publicData"])
 
     if request.method == "POST":  # ok so maybe we want to let some other people in too.
         if request.POST.get("sso", False) == "False":  # they picked user
             name = request.POST.get("name", False)
             association = request.POST.get("association", False)
-            return link_username(request, name, association, link)
-        elif request.POST.get("sso", False) == "True":  # they picked SSO
-            # prompt the user to login for a new token
-            return sso_redirect(request, scopes=["publicData"])
 
-    context = {
-        "link": link,
-    }
-    return render(request, "mumbletemps/login.html", context)
+            return link_username(
+                request=request, name=name, association=association, link=templink
+            )
+        elif request.POST.get("sso", False) == "True":  # they picked SSO
+            # prompt the user to log in for a new token
+            return sso_redirect(request=request, scopes=["publicData"])
+
+    context = {"link": templink}
+
+    return render(
+        request=request, template_name="mumbletemps/login.html", context=context
+    )
 
 
 def link_username(request, name, association, link):
-    connect_url = None
+    username = get_random_string(length=10)
 
-    username = get_random_string(10)
     while TempUser.objects.filter(username=username).exists():  # force unique
-        username = get_random_string(10)
+        username = get_random_string(length=10)
 
-    password = get_random_string(15)
+    password = get_random_string(length=15)
 
     display_name = "{}[{}] {}".format(
         app_settings.MUMBLE_TEMPS_LOGIN_PREFIX, association, name
@@ -129,31 +136,36 @@ def link_username(request, name, association, link):
         "mumble": settings.MUMBLE_URL,
     }
 
-    return render(request, "mumbletemps/link.html", context)
+    return render(
+        request=request, template_name="mumbletemps/link.html", context=context
+    )
 
 
 def link_sso(request, token, link):
-    connect_url = None
-
     try:
         char = EveCharacter.objects.get(character_id=token.character_id)
     except ObjectDoesNotExist:
         try:  # create a new character, we should not get here.
-            char = EveCharacter.objects.update_character(token.character_id)
+            char = EveCharacter.objects.update_character(
+                character_id=token.character_id
+            )
         except:  # noqa: E722
             pass  # Yeah… ain't gonna happen
     except MultipleObjectsReturned:
         pass  # authenticator won't care…, but the DB will be unhappy.
 
-    username = get_random_string(10)
-    while TempUser.objects.filter(username=username).exists():  # force unique
-        username = get_random_string(10)
+    username = get_random_string(length=10)
 
-    password = get_random_string(15)
+    while TempUser.objects.filter(username=username).exists():  # force unique
+        username = get_random_string(length=10)
+
+    password = get_random_string(length=15)
 
     display_name = "{}{}".format(
         app_settings.MUMBLE_TEMPS_SSO_PREFIX,
-        NameFormatter(MumbleService(), psudo_user(char, username)).format_name(),
+        NameFormatter(
+            service=MumbleService(), user=PseudoUser(main=char, username=username)
+        ).format_name(),
     )
 
     temp_user = TempUser.objects.create(
@@ -174,7 +186,9 @@ def link_sso(request, token, link):
         "mumble": settings.MUMBLE_URL,
     }
 
-    return render(request, "mumbletemps/link.html", context)
+    return render(
+        request=request, template_name="mumbletemps/link.html", context=context
+    )
 
 
 @login_required
@@ -184,9 +198,9 @@ def nuke(request, link_ref):
         TempLink.objects.get(link_ref=link_ref).delete()
         TempUser.objects.filter(templink__isnull=True).delete()
 
-        messages.success(request, f"Deleted Token {link_ref}")
+        messages.success(request=request, message=f"Deleted Token {link_ref}")
     except:  # noqa: E722
-        messages.error(request, f"Deleted Token {link_ref}")
+        messages.error(request=request, message=f"Deleted Token {link_ref}")
         pass  # Crappy link
 
-    return redirect("mumbletemps:index")
+    return redirect(to="mumbletemps:index")
