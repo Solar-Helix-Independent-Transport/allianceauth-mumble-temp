@@ -70,6 +70,11 @@ APPS_WITH_PUBLIC_VIEWS += [
     # Other apps with public views might live here
     "mumbletemps",
 ]
+
+CELERYBEAT_SCHEDULE["mumbletemps_tidy_up_temp_links"] = {
+    "task": "mumbletemps.tasks.tidy_up_temp_links",
+    "schedule": crontab(minute="*/5"),
+}
 ```
 
 > \[!NOTE\]
