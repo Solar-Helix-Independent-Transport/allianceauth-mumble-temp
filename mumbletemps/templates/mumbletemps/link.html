@@ -1,5 +1,6 @@
 {% extends "mumbletemps/base.html" %}
 
+{% load static %}
 {% load i18n %}
 {% load timetags %}
 
@@ -21,7 +22,7 @@
         <p>
             <a class="btn btn-primary" href="mumble://{{ connect_url }}">
                 <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Icons_mumble.svg/400px-Icons_mumble.svg.png"
+                    src="{% static 'mumbletemps/images/mumble-icon.png' %}"
                     alt="Mumble"
                     height="64"
                     width="64"
