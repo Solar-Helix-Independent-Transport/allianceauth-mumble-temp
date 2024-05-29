@@ -15,12 +15,13 @@ ______________________________________________________________________
 
 - [Usage](#usage)
 - [Setup](#setup)
-  - [Auth Plugin](#auth-plugin)
-  - [Settings](#settings)
+  - [Alliance Auth Plugin](#alliance-auth-plugin)
+    - [Step 1: Install the Package](#step-1-install-the-package)
+    - [Step 2: Configure Alliance Auth](#step-2-configure-alliance-auth)
+    - [Step 3: Finalizing the Installation](#step-3-finalizing-the-installation)
   - [Mumble Authenticator](#mumble-authenticator)
-  - [Auth Login Bypass](#auth-login-bypass)
-    - [Edit your projects `urls.py` file:](#edit-your-projects-urlspy-file)
-    - [Restart services and you're done.](#restart-services-and-youre-done)
+  - [Settings](#settings)
+  - [Restart services and you're done.](#restart-services-and-youre-done)
   - [Permissions](#permissions)
 - [Preview](#preview)
   - [Management and Creation](#management-and-creation)
@@ -43,20 +44,48 @@ The mumble chat command `!kicktemps` will purge the mumble server of all temp us
 >
 > ️This is assuming you already have configured a fully functioning mumble service.
 
-### Auth Plugin<a name="auth-plugin"></a>
+### Alliance Auth Plugin<a name="alliance-auth-plugin"></a>
 
-1. Install with `pip install allianceauth-mumbletemps`
-1. Add `'mumbletemps',` to your `INSTALLED_APPS` in the local.py, I recommend it is at the top for menu ordering.
-1. Run migrations
-1. Restart auth
+#### Step 1: Install the Package<a name="step-1-install-the-package"></a>
 
-### Settings<a name="settings"></a>
+Make sure you're in the virtual environment (venv) of your Alliance Auth installation. Then install the latest release directly from PyPi.
 
-| Setting                   | Default   | Description                                                              |
-| ------------------------- | --------- | ------------------------------------------------------------------------ |
-| MUMBLE_TEMPS_FORCE_SSO    | `True`    | Setting this to `False` will allow users to auth with the non-sso method |
-| MUMBLE_TEMPS_SSO_PREFIX   | `[TEMP]`  | Display Name Prefix for an SSO'd temp user in mumble                     |
-| MUMBLE_TEMPS_LOGIN_PREFIX | `[*TEMP]` | Display Name Prefix for a non-SSO'd temp user in mumble                  |
+```bash
+pip install allianceauth-mumbletemps
+```
+
+#### Step 2: Configure Alliance Auth<a name="step-2-configure-alliance-auth"></a>
+
+You need to add `'mumbletemps',` to your `INSTALLED_APPS` and `APPS_WITH_PUBLIC_VIEWS` in the `local.py` file of your Alliance Auth installation.
+
+This is fairly simple, configure your AA settings (`local.py`) as follows:
+
+```python
+INSTALLED_APPS += [
+    # Your other apps are here as well
+    "mumbletemps",
+]
+
+APPS_WITH_PUBLIC_VIEWS += [
+    # Other apps with public views might live here
+    "mumbletemps",
+]
+```
+
+> \[!NOTE\]
+>
+> If you don't have a list for `APPS_WITH_PUBLIC_VIEWS` yet, then add the whole block
+> from here. This feature has been added in Alliance Auth v3.6.0, so you might not yet
+> have this list in your `local.py`.
+
+#### Step 3: Finalizing the Installation<a name="step-3-finalizing-the-installation"></a>
+
+Run static files collection and migrations.
+
+```bash
+python manage.py collectstatic --noinput
+python manage.py migrate
+```
 
 ### Mumble Authenticator<a name="mumble-authenticator"></a>
 
@@ -87,53 +116,21 @@ If you did not use the git clone method of installing the authenticator,
 copy the contents of [my forkfound here](https://gitlab.com/aaronkable/mumble-authenticator)
 on top of your current installation.
 
-**BE SURE TO BACK UP YOUR `authenticator.ini` BEFORE YOU START!**
+### Settings<a name="settings"></a>
 
-### Auth Login Bypass<a name="auth-login-bypass"></a>
+| Setting                   | Default   | Description                                                              |
+| ------------------------- | --------- | ------------------------------------------------------------------------ |
+| MUMBLE_TEMPS_FORCE_SSO    | `True`    | Setting this to `False` will allow users to auth with the non-sso method |
+| MUMBLE_TEMPS_SSO_PREFIX   | `[TEMP]`  | Display Name Prefix for an SSO'd temp user in mumble                     |
+| MUMBLE_TEMPS_LOGIN_PREFIX | `[*TEMP]` | Display Name Prefix for a non-SSO'd temp user in mumble                  |
 
-To enable people to not have to register on auth, ensure you have fully updated `django-esi`
+### Restart services and you're done.<a name="restart-services-and-youre-done"></a>
 
-#### Edit your projects `urls.py` file:<a name="edit-your-projects-urlspy-file"></a>
+Restart your Alliance Auth instance to apply the changes.
 
-It should look something like this, if yours is different, only add the parts outlined below:
-
-```python
-from django.urls import re_path
-from django.conf.urls import include
-from allianceauth import urls
-
-urlpatterns = [
-    re_path(r"", include(urls)),
-]
-
-handler500 = "allianceauth.views.Generic500Redirect"
-handler404 = "allianceauth.views.Generic404Redirect"
-handler403 = "allianceauth.views.Generic403Redirect"
-handler400 = "allianceauth.views.Generic400Redirect"
+```bash
+sudo systemctl restart supervisor.service
 ```
-
-Edit it to add a new import and a new URL:
-
-```python
-from django.urls import re_path
-from django.conf.urls import include
-from allianceauth import urls
-from mumbletemps.views import link  # *** New Import
-
-urlpatterns = [
-    re_path(
-        r"^mumbletemps/join/(?P<link_ref>[\w\-]+)/$", link, name="join"
-    ),  # *** New URL override BEFORE THE MAIN IMPORT
-    re_path(r"", include(urls)),
-]
-
-handler500 = "allianceauth.views.Generic500Redirect"
-handler404 = "allianceauth.views.Generic404Redirect"
-handler403 = "allianceauth.views.Generic403Redirect"
-handler400 = "allianceauth.views.Generic400Redirect"
-```
-
-#### Restart services and you're done.<a name="restart-services-and-youre-done"></a>
 
 ### Permissions<a name="permissions"></a>
 
