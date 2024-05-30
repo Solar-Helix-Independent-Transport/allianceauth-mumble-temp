@@ -1,4 +1,4 @@
-# Makefile for Alliance Auth Fleet Activity Tracker (AFAT)
+# Makefile for Alliance Auth Mumble Temp Links
 
 # Variables
 appname = allianceauth-mumbletemps
