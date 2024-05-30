@@ -1,111 +1,117 @@
-{% load humanize %}
-{% load timetags %}
+{% extends "mumbletemps/base.html" %}
+
 {% load static %}
 {% load i18n %}
-{% load navactive %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    {% include 'allianceauth/icons.html' %}
+{% load timetags %}
 
-    <title>{% translate "Mumble Temporary Access" %} - {{ SITE_NAME }}</title>
+{% block mumbletemps %}
+    <div class="text-center">
+        <p>
+            <img class="ra-avatar img-circle" src="{{ link.creator.portrait_url_128 }}" alt="{{ link.creator.character_name }}">
+        </p>
 
-    {% include 'bundles/bootstrap-css.html' %}
-    {% include 'bundles/fontawesome.html' %}
+        <h4>
+            {% blocktranslate with character=link.creator.character_name %}
+                {{ character }} has invited you to join Mumble!
+            {% endblocktranslate %}
+        </h4>
 
-    <link href="{% static 'allianceauth/css/auth-base.css' %}" type="text/css" rel="stylesheet">
-</head>
-<body>
+        <p>{% translate "Time Remaining" %}: <span id="countdown{{ link.link_ref }}"></span></p>
+        <p><span class="label label-info">{% translate "Link Ref" %}: {{link.link_ref}}</span></p>
 
-<div id="wrapper" class="container">
-    <!-- Navigation -->
-    {% include 'allianceauth/top-menu.html' %}
-    <div class="row" id="site-body-wrapper">
-        <div class="col-sm-12">
-            <div style="margin-top:25px">
-                <div class="col-md-12 text-center">
-                    <img class="ra-avatar img-circle" src="{{link.creator.portrait_url_128}}"><br><br>
-                    <h4>{{link.creator.character_name}} has invited you to join Mumble!</h4>
-                    <p>Time Remaining: <span id="countdown{{link.link_ref}}"></span></p>
-                    <p><span class="label label-info">Link Ref: {{link.link_ref}}</span></p>
-                        <br>
-                    <a class="btn btn-primary" href="mumble://{{ connect_url }}">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Icons_mumble.svg/400px-Icons_mumble.svg.png" alt="Mumble" height="64" width="64" style="margin: 15px;">
+        <p>
+            <a class="btn btn-primary" href="mumble://{{ connect_url }}">
+                <img
+                    src="{% static 'mumbletemps/images/mumble-icon.png' %}"
+                    alt="Mumble"
+                    height="64"
+                    width="64"
+                    style="margin: 15px;"
+                >
 
-                        <span style="margin: 15px;">Click to Join Mumble as: <b>{{temp_user.name}}</b></span><br>
-                    </a>
-                    <div class="clearfix"></div><br>
-                    <div class="col-md-4 col-md-offset-4 col-sm-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading text-center">
-                                <h4>Manual Connect</h4>
-                            </div>
-                            <div class="panel-body">
-                                <p>If you have problems with the application link above. <br>Please use the following in Mumble's connection dialog</p>
-                                <p>Mumble Url: <span class="badge">{{mumble}}</span></p>
-                                <p>Username: <span class="badge">{{temp_user.username}}</span></p>
-                                <p>Password: <span class="badge">{{temp_user.password}}</span></p>
-                            </div>
-                        </div>
+                <span style="margin: 15px;">
+                    {% translate "Click to Join Mumble as" %}: <b>{{ temp_user.name }}</b>
+                </span>
+            </a>
+        </p>
+
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <div class="card-title mb-0">{% translate "Manually Connect" %}</div>
+                    </div>
+
+                    <div class="card-body">
+                        <p>{% translate "If you have problems with the application link above, please use the following in Mumble's connection dialog." %}</p>
+                        <p>{% translate "Mumble URL" %}: <span class="badge">{{ mumble }}</span></p>
+                        <p>{% translate "Username" %}: <span class="badge">{{ temp_user.username }}</span></p>
+                        <p>{% translate "Password" %}: <span class="badge">{{ temp_user.password }}</span></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</body>
-{% include 'bundles/moment-js.html' with locale=True %}
-{% include 'bundles/timers-js.html' %}
-<script type="text/javascript">
-    var locale = "{{ LANGUAGE_CODE }}";
 
-    var timers = [
+    {% include "bundles/moment-js.html" with locale=True %}
+    {% include "bundles/timers-js.html" %}
+
+    <script>
+        /* global moment */
+        const locale = '{{ LANGUAGE_CODE }}';
+        const timers = [
             {
-                'id': "{{ link.link_ref }}",
-                'targetDate': moment("{{ link.expires|print_timestamp| date:"c" }}"),
+                'id': '{{ link.link_ref }}',
+                'targetDate': moment('{{ link.expires|print_timestamp| date:"c" }}'),
                 'expired': false
             }
-    ];
+        ];
 
-    moment.locale(locale);
+        moment.locale(locale);
 
-    // Set initial values
-    timedUpdate();
+        /**
+         * Update a timer
+         *
+         * @param timer
+         */
+        const updateTimer = (timer) => {
+            if (timer.targetDate.isAfter(Date.now())) {
+                const duration = moment.duration(timer.targetDate - moment(), 'milliseconds');
 
-    // Start timed updates
-    setInterval(timedUpdate, 1000);
+                document.getElementById("countdown" + timer.id).innerHTML = getDurationString(duration);
+            } else {
+                timer.expired = true;
 
-    function timedUpdate() {
-        updateAllTimers();
-    }
+                document.getElementById("countdown" + timer.id).innerHTML = "";
+            }
+        };
 
-    function updateAllTimers () {
-        var l = timers.length;
-        for (var i=0; i < l; ++i) {
-            if (timers[i].expired) continue;
-            updateTimer(timers[i]);
-        }
-    }
+        /**
+         * Update all timers
+         */
+        const updateAllTimers = () => {
+            const l = timers.length;
 
-    /**
-     * Update a timer
-     * @param timer Timer information
-     * @param timer.targetDate Date of the timer
-     * @param timer.id Id number of the timer
-     * @param timer.expired
-     */
-    function updateTimer(timer) {
-        if (timer.targetDate.isAfter(Date.now())) {
-            duration = moment.duration(timer.targetDate - moment(), 'milliseconds');
-            document.getElementById("countdown" + timer.id).innerHTML = getDurationString(duration);
-        } else {
-            timer.expired = true;
-            document.getElementById("countdown" + timer.id).innerHTML = "";
-        }
-    }
+            for (let i=0; i < l; ++i) {
+                if (timers[i].expired) {
+                    continue;
+                }
 
-</script>
+                updateTimer(timers[i]);
+            }
+        };
+
+        /**
+         * Timed update
+         */
+        const timedUpdate = () => {
+            updateAllTimers();
+        };
+
+        // Set initial values
+        timedUpdate();
+
+        // Start timed updates
+        setInterval(timedUpdate, 1000);
+    </script>
+{% endblock mumbletemps %}

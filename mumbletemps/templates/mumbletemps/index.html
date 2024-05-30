@@ -1,189 +1,278 @@
-{% extends 'mumbletemps/base.html' %}
+{% extends "mumbletemps/base.html" %}
+
 {% load i18n %}
 {% load humanize %}
 {% load timetags %}
 
-{% block create %}
-    <div class="col-md-6">
-        <div class="panel panel-warning">
-            <div class="panel-heading">
-                <h3 class="panel-title text-center">Mumble Links</h3>
+{% block mumbletemps %}
+    <div class="col-md-6 mb-2">
+        <div class="card h-100">
+            <div class="card-header bg-warning">
+                <div class="card-title mb-0">{% translate "Mumble Temporary Links" %}</div>
             </div>
-            <div class="panel-body text-center">
-                Temp Links Give Access to mumble with the <b class="text-success">Guest</b> Group for the preset time<br><br>Connected users <b class="text-warning">will not</b> be kicked at the end of this time period<br><br>Templink users can be kicked in mumble by typing <span class="badge badge-danger text-warning">!kicktemps</span> in mumble chat<br><br>There are <b class="text-warning">no restrictions</b> on who or how many can use a templink, share wisely.</div>
+
+            <div class="card-body text-center">
+                <p>
+                    {% translate 'Temp Links Give Access to mumble with the <b class="text-success">Guest</b> Group for the preset time.' %}
+                </p>
+
+                <p>
+                    {% translate 'Connected users <b class="text-warning">will not</b> be kicked at the end of this period.' %}
+                </p>
+
+                <p>
+                    {% translate 'Templink users can be kicked in mumble by typing <span class="badge bg-danger">!kicktemps</span> in mumble chat.' %}
+                </p>
+
+                <p>
+                    {% translate 'There are <b class="text-warning">no restrictions</b> on who or how many can use a templink, share wisely.' %}
+                </p>
+            </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Create New Link</h3>
+
+    <div class="col-md-6 mt-sm-2 mt-md-0 mb-2">
+        <div class="card h-100">
+            <div class="card-header">
+                <div class="card-title mb-0">{% translate "Create New Link" %}</div>
             </div>
-            <div class="panel-body text-center">
-                <p>Your link will be displayed on the next page for easy copy and paste</p>
-                <form action="/mumbletemps/" method="post">
+
+            <div class="card-body text-center">
+                <p>{% translate "Your link will be displayed on the next page for an easy copy and paste." %}</p>
+
+                <form action="{% url 'mumbletemps:index' %}" method="post">
                     {% csrf_token %}
-                    <label for="time">Duration (hours)</label>
-                    <select class="form-control" name="time">
-                        <option value="3">3</option>
-                        <option value="6">6</option>
-                        <option value="12">12</option>
-                        <option value="24">24</option>
-                      </select>
-                    <br>
-                    <input class="btn btn-primary col-md-12" type="submit" value="OK">
+
+                    <div class="mb-3">
+                        <label for="time">{% translate "Duration (hours)" %}</label>
+                        <select class="form-control" name="time" id="time">
+                            <option value="3">3</option>
+                            <option value="6">6</option>
+                            <option value="12">12</option>
+                            <option value="24">24</option>
+                        </select>
+                    </div>
+
+                    <input class="btn btn-primary" type="submit" value="{% translate 'OK' %}">
                 </form>
             </div>
         </div>
     </div>
+
     {% if tl %}
-    <div class="col-md-12">
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <h3 class="panel-title">New Link</h3>
-            </div>
-            <div class="panel-body text-center" style="min-height: 100px;">
-                <p>Expires in: <span id="countdown{{tl.link_ref}}hot"></span></p>
-                <pre>{{ request.scheme }}://{{request.get_host}}{% url 'mumbletemps:join' tl.link_ref %}</pre>
-                <button class="btn btn-info col-md-12" id="clipboard-new" data-clipboard-text="{{ request.scheme }}://{{request.get_host}}{% url 'mumbletemps:join' tl.link_ref %}">Copy to Clipboard!</button>
+        <div class="my-2">
+            <div class="card">
+                <div class="card-header bg-success">
+                    <div class="card-title mb-0">{% translate "New Link" %}</div>
+                </div>
+
+                <div class="card-body text-center" style="min-height: 100px;">
+                    <p>
+                        {% translate "Expires in" %}: <span id="countdown{{ tl.link_ref }}hot"></span>
+                    </p>
+
+                    <pre>{{ SITE_URL }}{% url 'mumbletemps:join' tl.link_ref %}</pre>
+
+                    <button
+                        class="btn btn-info"
+                        id="clipboard-new"
+                        data-clipboard-text="{{ SITE_URL }}{% url 'mumbletemps:join' tl.link_ref %}"
+                    >
+                        {% translate "Copy to Clipboard!" %}
+                    </button>
+                </div>
             </div>
         </div>
-    </div>{% endif %}
-    <div class="col-md-12">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Current Links</h3>
+    {% endif %}
+
+    <div class="my-2">
+        <div class="card pb-2">
+            <div class="card-header">
+                <div class="card-title mb-0">{% translate "Active Links" %}</div>
             </div>
-            <div class="panel-body" style="min-height: 100px;">
+
+            <div class="card-body" style="min-height: 100px;">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th></th>
-                            <th class="text-center">Creator</th>
-                            <th class="text-center">Key</th>
-                            <th class="text-center">Time Left</th>
-                            <th class="text-center">Copy</th>
-                            <th class="text-center">Nuke</th>
+                            <th class="text-center">{% translate "Creator" %}</th>
+                            <th class="text-center">{% translate "Key" %}</th>
+                            <th class="text-center">{% translate "Time Left" %}</th>
+                            <th class="text-center">{% translate "Copy" %}</th>
+                            <th class="text-center">{% translate "Nuke" %}</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         {% for lnk in tl_list %}
-                        <tr>
-                            <td class="text-center"><img class="ra-avatar img-circle" src="{{lnk.creator.portrait_url_32}}"></td>
-                            <td class="text-center">{{lnk.creator.character_name}}</td>
-                            <td class="text-center">{{lnk.link_ref}}</td>
-                            <td class="text-center" id="countdown{{lnk.link_ref}}"></td>
-                            <td class="text-center"><button class="btn btn-info" id="clipboard-{{lnk.link_ref}}" data-clipboard-text="{{ request.scheme }}://{{request.get_host}}{% url 'mumbletemps:join' lnk.link_ref %}">Copy to Clipboard!</button></td>
-                            <td class="text-center"><a class="btn btn-danger" href="{% url 'mumbletemps:nuke' lnk.link_ref %}">Nuke Link!</a></td>
-                        </tr>
+                            <tr>
+                                <td class="text-center">
+                                    <img class="ra-avatar img-circle" src="{{ lnk.creator.portrait_url_32 }}" alt="{{ lnk.creator.character_name }}">
+                                </td>
+
+                                <td class="text-center">
+                                    {{ lnk.creator.character_name }}
+                                </td>
+
+                                <td class="text-center">
+                                    {{ lnk.link_ref }}
+                                </td>
+
+                                <td class="text-center" id="countdown{{ lnk.link_ref }}"></td>
+
+                                <td class="text-center">
+                                    <button
+                                        class="btn btn-info"
+                                        id="clipboard-{{ lnk.link_ref }}" data-clipboard-text="{{ SITE_URL }}{% url 'mumbletemps:join' lnk.link_ref %}"
+                                    >
+                                        {% translate "Copy to Clipboard!" %}
+                                    </button>
+                                </td>
+
+                                <td class="text-center">
+                                    <a class="btn btn-danger" href="{% url 'mumbletemps:nuke' lnk.link_ref %}">
+                                        {% translate "Nuke Link!" %}
+                                    </a>
+                                </td>
+                            </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
-        {% if ex_tl_list.count > 0 %}
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Expired Links</h3>
+    </div>
+
+    {% if ex_tl_list.count > 0 %}
+        <div class="my-2">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title mb-0">{% translate "Expired Links" %}</div>
                 </div>
-                <div class="panel-body" style="min-height: 100px;">
+
+                <div class="card-body" style="min-height: 100px;">
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th></th>
-                                <th class="text-center">Creator</th>
-                                <th class="text-center">Key</th>
-                                <th class="text-center">Nuke</th>
+                                <th class="text-center">{% translate "Creator" %}</th>
+                                <th class="text-center">{% translate "Key" %}</th>
+                                <th class="text-center">{% translate "Nuke" %}</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             {% for lnk in ex_tl_list %}
-                            <tr>
-                                <td class="text-center"><img class="ra-avatar img-circle" src="{{lnk.creator.portrait_url_32}}"></td>
-                                <td class="text-center">{{lnk.creator.character_name}}</td>
-                                <td class="text-center">{{lnk.link_ref}}</td>
-                                <td class="text-center"><a class="btn btn-danger" href="{% url 'mumbletemps:nuke' lnk.link_ref %}">Nuke Link!</a></td>
-                            </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <img class="ra-avatar img-circle" src="{{ lnk.creator.portrait_url_32 }}" alt="{{ lnk.creator.character_name }}">
+                                    </td>
+
+                                    <td class="text-center">
+                                        {{ lnk.creator.character_name }}
+                                    </td>
+
+                                    <td class="text-center">
+                                        {{ lnk.link_ref }}
+                                    </td>
+
+                                    <td class="text-center">
+                                        <a class="btn btn-danger" href="{% url 'mumbletemps:nuke' lnk.link_ref %}">
+                                            {% translate "Nuke Link!" %}
+                                        </a>
+                                    </td>
+                                </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
-        {% endif %}
-    </div>
-{% endblock %}
+        </div>
+    {% endif %}
+{% endblock mumbletemps %}
 
 {% block extra_javascript %}
-{% include 'bundles/clipboard-js.html' %}
-<script>
-    var clipboard = new ClipboardJS('#clipboard-new');
-    {% for lnk in tl_list %}
-    var lnk{{lnk.link_ref}} = new ClipboardJS('#clipboard-{{lnk.link_ref}}');
-    {% endfor %}
-</script>
-{% include 'bundles/moment-js.html' with locale=True %}
-{% include 'bundles/timers-js.html' %}
-<script type="text/javascript">
-    var locale = "{{ LANGUAGE_CODE }}";
+    {% include 'bundles/clipboard-js.html' %}
 
-    var timers = [
+    <script>
+        /* global ClipboardJS, moment */
+        const clipboard = new ClipboardJS('#clipboard-new');
+
+        {% for lnk in tl_list %}
+            const lnk{{ lnk.link_ref }} = new ClipboardJS('#clipboard-{{ lnk.link_ref }}');
+        {% endfor %}
+    </script>
+
+    {% include "bundles/moment-js.html" with locale=True %}
+    {% include "bundles/timers-js.html" %}
+
+    <script>
+        const locale = '{{ LANGUAGE_CODE }}';
+
+        const timers = [
             {% for lnk in tl_list %}
-            {
-                'id': "{{ lnk.link_ref }}",
-                'targetDate': moment("{{ lnk.expires|print_timestamp| date:"c" }}"),
-                'expired': false
-            },{% endfor %}
+                {
+                    'id': "{{ lnk.link_ref }}",
+                    'targetDate': moment("{{ lnk.expires|print_timestamp| date:"c" }}"),
+                    'expired': false
+                },
+            {% endfor %}
+
             {% if tl %}
-            {
-                'id': "{{ tl.link_ref }}hot",
-                'targetDate': moment("{{ tl.expires|print_timestamp| date:"c" }}"),
-                'expired': false
-            },{% endif %}
-    ];
+                {
+                    'id': "{{ tl.link_ref }}hot",
+                    'targetDate': moment('{{ tl.expires|print_timestamp| date:"c" }}'),
+                    'expired': false
+                },
+            {% endif %}
+        ];
 
-    moment.locale(locale);
+        moment.locale(locale);
 
-    // Set initial values
-    timedUpdate();
+        /**
+         * Update a timer
+         *
+         * @param timer
+         */
+        const updateTimer = (timer) => {
+            if (timer.targetDate.isAfter(Date.now())) {
+                const duration = moment.duration(timer.targetDate - moment(), 'milliseconds');
 
-    // Start timed updates
-    setInterval(timedUpdate, 1000);
+                document.getElementById('countdown' + timer.id).innerHTML = getDurationString(duration);
+            } else {
+                timer.expired = true;
 
-    function timedUpdate() {
-        updateAllTimers();
-    }
+                document.getElementById('countdown' + timer.id).innerHTML = '';
+            }
+        };
 
-    function updateAllTimers () {
-        var l = timers.length;
-        for (var i=0; i < l; ++i) {
-            if (timers[i].expired) continue;
-            updateTimer(timers[i]);
-        }
-    }
+        /**
+         * Update all timers
+         */
+        const updateAllTimers = () => {
+            const l = timers.length;
 
-    /**
-     * Update a timer
-     * @param timer Timer information
-     * @param timer.targetDate Date of the timer
-     * @param timer.id Id number of the timer
-     * @param timer.expired
-     */
-    function updateTimer(timer) {
-        if (timer.targetDate.isAfter(Date.now())) {
-            duration = moment.duration(timer.targetDate - moment(), 'milliseconds');
-            document.getElementById("countdown" + timer.id).innerHTML = getDurationString(duration);
-        } else {
-            timer.expired = true;
-            document.getElementById("countdown" + timer.id).innerHTML = "";
-        }
-    }
+            for (let i=0; i < l; ++i) {
+                if (timers[i].expired) {
+                    continue;
+                }
 
-</script>
+                updateTimer(timers[i]);
+            }
+        };
 
+        /**
+         * Timed update function
+         */
+        const timedUpdate = () => {
+            updateAllTimers();
+        };
 
-{% endblock %}
+        // Set initial values
+        timedUpdate();
 
-{% block extra_css %}
-{% endblock %}
+        // Start timed updates
+        setInterval(timedUpdate, 1000);
 
-{% block extra_script %}
-{% endblock %}
+    </script>
+{% endblock extra_javascript %}

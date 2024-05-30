@@ -1,15 +1,16 @@
 from django import template
 import datetime
-from django.utils import timezone
 
 register = template.Library()
 
+
 def print_timestamp(timestamp):
     try:
-        #assume, that timestamp is given in seconds with decimal point
+        # Assume that timestamp is given in seconds with decimal point
         ts = float(timestamp)
     except ValueError:
         return None
-    return datetime.datetime.fromtimestamp(ts).replace(tzinfo=timezone.utc)
+    return datetime.datetime.fromtimestamp(ts).replace(tzinfo=datetime.timezone.utc)
+
 
 register.filter(print_timestamp)

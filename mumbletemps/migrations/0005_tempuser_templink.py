@@ -7,13 +7,18 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mumbletemps', '0004_auto_20200605_0828'),
+        ("mumbletemps", "0004_auto_20200605_0828"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='tempuser',
-            name='templink',
-            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to='mumbletemps.TempLink'),
+            model_name="tempuser",
+            name="templink",
+            field=models.ForeignKey(
+                default=None,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="mumbletemps.TempLink",
+            ),
         ),
     ]

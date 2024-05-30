@@ -9,20 +9,36 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('eveonline', '0010_alliance_ticker'),
+        ("eveonline", "0010_alliance_ticker"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='TempLink',
+            name="TempLink",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('expires', models.IntegerField()),
-                ('link_ref', models.CharField(max_length=20)),
-                ('creator', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL, to='eveonline.EveCharacter')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("expires", models.IntegerField()),
+                ("link_ref", models.CharField(max_length=20)),
+                (
+                    "creator",
+                    models.ForeignKey(
+                        default=None,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="eveonline.EveCharacter",
+                    ),
+                ),
             ],
             options={
-                'permissions': (('create_new_links', 'Can Create Temp Links'),),
+                "permissions": (("create_new_links", "Can Create Temp Links"),),
             },
         ),
     ]
