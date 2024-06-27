@@ -16,16 +16,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: install dependencies
-        run: make dev
-
-      - name: clean up
+      - name: Clean up environment
         run: make clean
 
-      - name: Build Python
-        run: make package
+      - name: Build package
+        run: make build
 
-      - name: Upload Package
+      - name: Upload Package to PyPi
         if: ${{ !env.ACT }} # Don't run in a local test environment
         env:
           TWINE_USERNAME: __token__

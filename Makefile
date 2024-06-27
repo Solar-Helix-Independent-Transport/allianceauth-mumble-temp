@@ -35,3 +35,15 @@ translationfiles:
 		-l zh_Hans \
 		--keep-pot \
 		--ignore 'build/*'
+
+# build package
+build:
+	hatchling build
+
+# publish package
+publish:
+	pip install twine
+	twine upload dist/*
+
+clean:
+	rm -rf dist/
