@@ -41,7 +41,8 @@ translationfiles:
 
 # build package
 build:
-	hatchling build
+	pip install hatch
+	hatch build
 
 # publish package
 publish:
