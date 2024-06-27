@@ -16,6 +16,9 @@ help:
 	@echo ""
 	@echo "Commands:"
 	@echo "  translationfiles    Create or update translation files"
+	@echo "  clean               Clean build environment"
+	@echo "  build               Build PyPi Packages"
+	@echo "  publish             Publish build files to PyPi"
 
 # Translation files
 translationfiles:
