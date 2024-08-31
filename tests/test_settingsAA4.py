@@ -11,7 +11,7 @@ CSRF_TRUSTED_ORIGINS = [SITE_URL]
 CELERY_ALWAYS_EAGER = True  # Forces celery to run locally for testing
 
 INSTALLED_APPS += [
-    "allianceauth.services.mumble",
+    "allianceauth.services.modules.mumble",
     "mumbletemps"
 ]
 
