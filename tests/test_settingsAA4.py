@@ -53,3 +53,5 @@ CACHES = {
         }
     }
 }
+
+MUMBLE_URL = ""
