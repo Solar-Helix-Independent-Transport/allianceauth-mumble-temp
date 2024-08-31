@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-29 23:33+0200\n"
+"POT-Creation-Date: 2024-08-30 13:59+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 #: mumbletemps/auth_hooks.py:14
 msgid "Mumble Temp Links"
 msgstr ""
@@ -135,6 +135,10 @@ msgstr ""
 msgid "Link Ref"
 msgstr ""
 
+#: mumbletemps/templates/mumbletemps/link.html:26
+msgid "Mumble"
+msgstr ""
+
 #: mumbletemps/templates/mumbletemps/link.html:33
 msgid "Click to Join Mumble as"
 msgstr ""
@@ -169,6 +173,10 @@ msgid ""
 "                "
 msgstr ""
 
+#: mumbletemps/templates/mumbletemps/login.html:31
+msgid "Login with SSO\""
+msgstr ""
+
 #: mumbletemps/templates/mumbletemps/login.html:41
 msgid "Non SSO Login"
 msgstr ""
@@ -193,6 +201,10 @@ msgstr ""
 
 #: mumbletemps/templates/mumbletemps/login.html:60
 msgid "Who are you with?"
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/login.html:63
+msgid "Submit"
 msgstr ""
 
 #: mumbletemps/templates/mumbletemps/login.html:63
