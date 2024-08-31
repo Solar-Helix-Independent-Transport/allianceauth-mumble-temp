@@ -28,7 +28,7 @@
                     type="image"
                     class="img-responsive center-block"
                     src="{% static 'allianceauth/authentication/img/sso/EVE_SSO_Login_Buttons_Large_Black.png' %}"
-                    alt="Login with SSO"
+                    alt="{% translate 'Login with SSO"' %}"
                 >
             </form>
         </div>
@@ -60,7 +60,7 @@
                                         <input type="text" class="form-control" name="association" id="association" placeholder="{% translate 'Who are you with?' %}">
                                     </p>
 
-                                    <button type="submit" value="Submit" class="btn btn-primary">{% translate "Login Without SSO" %}</button>
+                                    <button type="submit" value="{% translate 'Submit' %}" class="btn btn-primary">{% translate "Login Without SSO" %}</button>
                                 </form>
                             </div>
                         </div>

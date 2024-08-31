@@ -17,13 +17,13 @@
         </h4>
 
         <p>{% translate "Time Remaining" %}: <span id="countdown{{ link.link_ref }}"></span></p>
-        <p><span class="label label-info">{% translate "Link Ref" %}: {{link.link_ref}}</span></p>
+        <p><span class="label label-info">{% translate "Link Ref" %}: {{ link.link_ref }}</span></p>
 
         <p>
             <a class="btn btn-primary" href="mumble://{{ connect_url }}">
                 <img
                     src="{% static 'mumbletemps/images/mumble-icon.png' %}"
-                    alt="Mumble"
+                    alt="{% translate 'Mumble' %}"
                     height="64"
                     width="64"
                     style="margin: 15px;"
