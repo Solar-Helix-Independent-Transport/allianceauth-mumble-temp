@@ -55,59 +55,31 @@
     <script>
         /* global moment */
         const locale = '{{ LANGUAGE_CODE }}';
-        const timers = [
-            {
-                'id': '{{ link.link_ref }}',
-                'targetDate': moment('{{ link.expires|print_timestamp| date:"c" }}'),
-                'expired': false
-            }
-        ];
+        const linkRef = '{{ link.link_ref }}';
+        const targetDate = moment('{{ link.expires|print_timestamp|date:"c" }}');
 
         moment.locale(locale);
 
-        /**
-         * Update a timer
-         *
-         * @param timer
-         */
-        const updateTimer = (timer) => {
-            if (timer.targetDate.isAfter(Date.now())) {
-                const duration = moment.duration(timer.targetDate - moment(), 'milliseconds');
+        let expired = false;
 
-                document.getElementById("countdown" + timer.id).innerHTML = getDurationString(duration);
+        const updateTimer = () => {
+            if (expired) {
+                return;
+            }
+
+            const countdownElement = document.getElementById("countdown" + linkRef);
+
+            if (targetDate.isAfter(Date.now())) {
+                const duration = moment.duration(targetDate - moment(), 'milliseconds');
+                countdownElement.innerHTML = getDurationString(duration);
             } else {
-                timer.expired = true;
-
-                document.getElementById("countdown" + timer.id).innerHTML = "";
+                expired = true;
+                countdownElement.innerHTML = "";
             }
         };
 
-        /**
-         * Update all timers
-         */
-        const updateAllTimers = () => {
-            const l = timers.length;
-
-            for (let i=0; i < l; ++i) {
-                if (timers[i].expired) {
-                    continue;
-                }
-
-                updateTimer(timers[i]);
-            }
-        };
-
-        /**
-         * Timed update
-         */
-        const timedUpdate = () => {
-            updateAllTimers();
-        };
-
-        // Set initial values
-        timedUpdate();
-
-        // Start timed updates
-        setInterval(timedUpdate, 1000);
+        // Set initial value and start updates
+        updateTimer();
+        setInterval(updateTimer, 1000);
     </script>
 {% endblock mumbletemps %}
