@@ -21,15 +21,11 @@
 
         <p>
             <a class="btn btn-primary" href="mumble://{{ connect_url }}">
-                <img
-                    src="{% static 'mumbletemps/images/mumble-icon.png' %}"
-                    alt="{% translate 'Mumble' %}"
-                    height="64"
-                    width="64"
-                    style="margin: 15px;"
-                >
+                <svg width="64" height="64" class="m-3">
+                    <use href="#aa-mumble-logo"></use>
+                </svg>
 
-                <span style="margin: 15px;">
+                <span class="m-3">
                     {% translate "Click to Join Mumble as" %}: <b>{{ temp_user.name }}</b>
                 </span>
             </a>
