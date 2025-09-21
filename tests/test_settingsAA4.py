@@ -2,7 +2,7 @@
 Alliance Auth Test Suite Django settings.
 """
 
-from allianceauth.project_template.project_name.settings.base import *
+from allianceauth.project_template.project_name.settings.base import *  # noqa: F403
 
 SITE_URL = "https://example.com"
 CSRF_TRUSTED_ORIGINS = [SITE_URL]
@@ -10,7 +10,7 @@ CSRF_TRUSTED_ORIGINS = [SITE_URL]
 # Celery configuration
 CELERY_ALWAYS_EAGER = True  # Forces celery to run locally for testing
 
-INSTALLED_APPS += [
+INSTALLED_APPS += [  # noqa: F405
     "allianceauth.services.modules.mumble",
     "mumbletemps"
 ]
@@ -38,6 +38,7 @@ PASSWORD_HASHERS = [
 ESI_SSO_CLIENT_ID = '123'
 ESI_SSO_CLIENT_SECRET = '123'
 ESI_SSO_CALLBACK_URL = '123'
+ESI_USER_CONTACT_EMAIL = 'me@example.org'
 
 CACHES = {
     "default": {
