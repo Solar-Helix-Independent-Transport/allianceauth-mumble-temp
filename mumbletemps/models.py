@@ -7,7 +7,11 @@ class TempLink(models.Model):
     link_ref = models.CharField(max_length=20)
     # active = models.BooleanField(default=True)
     creator = models.ForeignKey(
-        EveCharacter, on_delete=models.SET_NULL, null=True, default=None
+        EveCharacter,
+        on_delete=models.SET_NULL,
+        null=True,
+        default=None,
+        related_name="+"
     )
 
     class Meta:
