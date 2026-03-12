@@ -13,7 +13,7 @@ keywords = [
     "eveonline",
     "mumble",
 ]
-license = {file = "LICENSE"}
+license = { file = "LICENSE" }
 authors = [
     { name = "Aaron Kable", email = "aaronkable@gmail.com" },
 ]
@@ -39,14 +39,13 @@ dynamic = [
     "version",
 ]
 dependencies = [
-    "allianceauth<5.0.0,>=4",
+    "allianceauth<5,>=4.10",
 ]
-[project.urls]
-Changelog = "https://github.com/Solar-Helix-Independent-Transport/allianceauth-mumble-temp/blob/master/CHANGELOG.md"
-Documentation = "https://github.com/Solar-Helix-Independent-Transport/allianceauth-mumble-temp/blob/master/README.md"
-Homepage = "https://github.com/Solar-Helix-Independent-Transport/allianceauth-mumble-temp"
-Source = "https://github.com/Solar-Helix-Independent-Transport/allianceauth-mumble-temp.git"
-Tracker = "https://github.com/Solar-Helix-Independent-Transport/allianceauth-mumble-temp/issues"
+urls.Changelog = "https://github.com/Solar-Helix-Independent-Transport/allianceauth-mumble-temp/blob/master/CHANGELOG.md"
+urls.Documentation = "https://github.com/Solar-Helix-Independent-Transport/allianceauth-mumble-temp/blob/master/README.md"
+urls.Homepage = "https://github.com/Solar-Helix-Independent-Transport/allianceauth-mumble-temp"
+urls.Source = "https://github.com/Solar-Helix-Independent-Transport/allianceauth-mumble-temp.git"
+urls.Tracker = "https://github.com/Solar-Helix-Independent-Transport/allianceauth-mumble-temp/issues"
 
 [tool.hatch.build]
 include = [

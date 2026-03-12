@@ -1,0 +1,216 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Gnevich <and.vareba81@gmail.com>, 2025
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-30 13:59+1000\n"
+"PO-Revision-Date: 2024-08-31 11:37+0000\n"
+"Last-Translator: Gnevich <and.vareba81@gmail.com>, 2025\n"
+"Language-Team: Russian (https://app.transifex.com/alliance-auth/teams/107430/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: mumbletemps/auth_hooks.py:14
+msgid "Mumble Temp Links"
+msgstr "Временные ссылки Mumble"
+
+#: mumbletemps/templates/mumbletemps/base.html:6
+#: mumbletemps/templates/mumbletemps/base.html:10
+#: mumbletemps/templates/mumbletemps/index.html:11
+msgid "Mumble Temporary Links"
+msgstr "Временные ссылки Mumble"
+
+#: mumbletemps/templates/mumbletemps/index.html:16
+msgid ""
+"Temp Links Give Access to mumble with the <b class=\"text-"
+"success\">Guest</b> Group for the preset time."
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/index.html:20
+msgid ""
+"Connected users <b class=\"text-warning\">will not</b> be kicked at the end "
+"of this period."
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/index.html:24
+msgid ""
+"Templink users can be kicked in mumble by typing <span class=\"badge bg-"
+"danger\">!kicktemps</span> in mumble chat."
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/index.html:28
+msgid ""
+"There are <b class=\"text-warning\">no restrictions</b> on who or how many "
+"can use a templink, share wisely."
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/index.html:37
+msgid "Create New Link"
+msgstr "Создать новую ссылку"
+
+#: mumbletemps/templates/mumbletemps/index.html:41
+msgid ""
+"Your link will be displayed on the next page for an easy copy and paste."
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/index.html:47
+msgid "Duration (hours)"
+msgstr "Продолжительность (часы)"
+
+#: mumbletemps/templates/mumbletemps/index.html:56
+msgid "OK"
+msgstr "ОК"
+
+#: mumbletemps/templates/mumbletemps/index.html:66
+msgid "New Link"
+msgstr "Новая ссылка"
+
+#: mumbletemps/templates/mumbletemps/index.html:71
+msgid "Expires in"
+msgstr "Истекает через"
+
+#: mumbletemps/templates/mumbletemps/index.html:81
+#: mumbletemps/templates/mumbletemps/index.html:129
+msgid "Copy to Clipboard!"
+msgstr "Скопировано!"
+
+#: mumbletemps/templates/mumbletemps/index.html:91
+msgid "Active Links"
+msgstr "Активные ссылки"
+
+#: mumbletemps/templates/mumbletemps/index.html:99
+#: mumbletemps/templates/mumbletemps/index.html:158
+msgid "Creator"
+msgstr "Создатель"
+
+#: mumbletemps/templates/mumbletemps/index.html:100
+#: mumbletemps/templates/mumbletemps/index.html:159
+msgid "Key"
+msgstr "Ключ"
+
+#: mumbletemps/templates/mumbletemps/index.html:101
+msgid "Time Left"
+msgstr "Осталось времени"
+
+#: mumbletemps/templates/mumbletemps/index.html:102
+msgid "Copy"
+msgstr "Копировать"
+
+#: mumbletemps/templates/mumbletemps/index.html:103
+#: mumbletemps/templates/mumbletemps/index.html:160
+msgid "Nuke"
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/index.html:135
+#: mumbletemps/templates/mumbletemps/index.html:181
+msgid "Nuke Link!"
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/index.html:150
+msgid "Expired Links"
+msgstr "Недействительные ссылки"
+
+#: mumbletemps/templates/mumbletemps/link.html:14
+#, python-format
+msgid ""
+"\n"
+"                %(character)s has invited you to join Mumble!\n"
+"            "
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/link.html:19
+#: mumbletemps/templates/mumbletemps/login.html:20
+msgid "Time Remaining"
+msgstr "Времени осталось"
+
+#: mumbletemps/templates/mumbletemps/link.html:20
+#: mumbletemps/templates/mumbletemps/login.html:21
+msgid "Link Ref"
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/link.html:26
+msgid "Mumble"
+msgstr "Mumble"
+
+#: mumbletemps/templates/mumbletemps/link.html:33
+msgid "Click to Join Mumble as"
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/link.html:42
+msgid "Manually Connect"
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/link.html:46
+msgid ""
+"If you have problems with the application link above, please use the "
+"following in Mumble's connection dialog."
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/link.html:47
+msgid "Mumble URL"
+msgstr "Ссылка Mumble "
+
+#: mumbletemps/templates/mumbletemps/link.html:48
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: mumbletemps/templates/mumbletemps/link.html:49
+msgid "Password"
+msgstr "Пароль"
+
+#: mumbletemps/templates/mumbletemps/login.html:15
+#, python-format
+msgid ""
+"\n"
+"                    %(character)s has invited you to join Mumble!\n"
+"                "
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/login.html:31
+msgid "Login with SSO\""
+msgstr "Войти с помощью SSO"
+
+#: mumbletemps/templates/mumbletemps/login.html:41
+msgid "Non SSO Login"
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/login.html:51
+msgid ""
+"If you cannot SSO with your EVE character, You can enter your own details "
+"below."
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/login.html:54
+msgid "Name"
+msgstr "Имя"
+
+#: mumbletemps/templates/mumbletemps/login.html:55
+msgid "Who are you?"
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/login.html:59
+msgid "Association"
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/login.html:60
+msgid "Who are you with?"
+msgstr ""
+
+#: mumbletemps/templates/mumbletemps/login.html:63
+msgid "Submit"
+msgstr "Отправить"
+
+#: mumbletemps/templates/mumbletemps/login.html:63
+msgid "Login Without SSO"
+msgstr ""

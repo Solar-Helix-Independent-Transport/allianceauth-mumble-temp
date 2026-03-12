@@ -75,7 +75,7 @@
 
                     <button
                         class="btn btn-info"
-                        id="clipboard-new"
+                        id="clipboard-mumble-templink-new"
                         data-clipboard-text="{{ SITE_URL }}{% url 'mumbletemps:join' tl.link_ref %}"
                     >
                         {% translate "Copy to Clipboard!" %}
@@ -124,7 +124,7 @@
                                 <td class="text-center">
                                     <button
                                         class="btn btn-info"
-                                        id="clipboard-{{ lnk.link_ref }}" data-clipboard-text="{{ SITE_URL }}{% url 'mumbletemps:join' lnk.link_ref %}"
+                                        id="clipboard-mumble-templink-{{ lnk.link_ref }}" data-clipboard-text="{{ SITE_URL }}{% url 'mumbletemps:join' lnk.link_ref %}"
                                     >
                                         {% translate "Copy to Clipboard!" %}
                                     </button>
@@ -193,22 +193,12 @@
 
 {% block extra_javascript %}
     {% include 'bundles/clipboard-js.html' %}
-
-    <script>
-        /* global ClipboardJS, moment */
-        const clipboard = new ClipboardJS('#clipboard-new');
-
-        {% for lnk in tl_list %}
-            const lnk{{ lnk.link_ref }} = new ClipboardJS('#clipboard-{{ lnk.link_ref }}');
-        {% endfor %}
-    </script>
-
     {% include "bundles/moment-js.html" with locale=True %}
     {% include "bundles/timers-js.html" %}
 
     <script>
+        const clipboard = new ClipboardJS('[id^="clipboard-mumble-templink-"]');
         const locale = '{{ LANGUAGE_CODE }}';
-
         const timers = [
             {% for lnk in tl_list %}
                 {
@@ -235,44 +225,26 @@
          * @param timer
          */
         const updateTimer = (timer) => {
+            const element = document.getElementById('countdown' + timer.id);
+
             if (timer.targetDate.isAfter(Date.now())) {
                 const duration = moment.duration(timer.targetDate - moment(), 'milliseconds');
-
-                document.getElementById('countdown' + timer.id).innerHTML = getDurationString(duration);
+                element.innerHTML = getDurationString(duration);
             } else {
                 timer.expired = true;
-
-                document.getElementById('countdown' + timer.id).innerHTML = '';
+                element.innerHTML = '';
             }
         };
 
         /**
-         * Update all timers
+         * Update all active timers
          */
         const updateAllTimers = () => {
-            const l = timers.length;
-
-            for (let i=0; i < l; ++i) {
-                if (timers[i].expired) {
-                    continue;
-                }
-
-                updateTimer(timers[i]);
-            }
+            timers.filter(timer => !timer.expired).forEach(updateTimer);
         };
 
-        /**
-         * Timed update function
-         */
-        const timedUpdate = () => {
-            updateAllTimers();
-        };
-
-        // Set initial values
-        timedUpdate();
-
-        // Start timed updates
-        setInterval(timedUpdate, 1000);
-
+        // Set initial values and start updates
+        updateAllTimers();
+        setInterval(updateAllTimers, 1000);
     </script>
 {% endblock extra_javascript %}
