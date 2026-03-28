@@ -6,7 +6,7 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("eveonline", "0020_alter_eveallianceinfo_options_and_more"),
+        ("eveonline", "0018_alter_evecharacter_alliance_name_and_more"),
         ("mumbletemps", "0006_tempuser_character_id"),
     ]
 
