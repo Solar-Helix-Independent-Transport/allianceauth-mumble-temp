@@ -1,3 +1,15 @@
+# This Project is Archived
+
+As of [Alliance Auth v5](https://gitlab.com/allianceauth/allianceauth/-/releases/v5.0.0)
+
+Temp link capabilities are included directly by [Alliance Auths Mumble Authenticator](https://allianceauth.readthedocs.io/en/latest/features/services/mumble.html
+).
+
+---- Thanks ----
+
+
+
+
 # Mumble Temp Links<a name="mumble-temp-links"></a>
 
 > \[!IMPORTANT\]
